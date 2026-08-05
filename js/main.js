@@ -37,7 +37,7 @@ if (!reduced && typeof Lenis !== 'undefined') {
           <h2>${esc(c.title)}</h2>
           <p>${esc(c.desc)}</p>
           <div class="course-row__tags">${(c.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
-          <a href="contact.html" class="btn${c.accent ? '' : ' btn--glass'}">${esc(c.button)} ⟶</a>
+          <a href="${esc(c.link || 'contact.html')}" class="btn${c.accent ? '' : ' btn--glass'}"${c.external ? ' target="_blank" rel="noopener"' : ''}>${esc(c.button)} ⟶</a>
         </div>
       </article>`).join('');
   }

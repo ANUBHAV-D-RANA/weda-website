@@ -52,6 +52,8 @@ window.WEDA_CONTENT = {
       desc: "Self-paced recorded ammunition for Sainik School, RIMC and RMS — structured video lectures and workbooks. Train from anywhere, anytime, at your own command.",
       tags: ["Sainik School", "RIMC", "RMS"],
       button: "Buy Now",
+      link: "https://ewfqe.courses.store/",
+      external: true,
       accent: false,
     },
   ],
