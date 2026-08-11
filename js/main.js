@@ -27,19 +27,158 @@ if (!reduced && typeof Lenis !== 'undefined') {
   const courseList = document.getElementById('courseList');
   if (courseList && C.courses) {
     courseList.innerHTML = C.courses.map((c, i) => `
-      <article class="course-row glass glass--hov" data-a>
+      <article class="course-row glass glass--hov" data-a id="course-${i + 1}">
         <div class="course-row__media pframe" data-plx>
           <img src="${esc(c.image)}" alt="${esc(c.title)} — The Winning Edge Defence Academy" loading="lazy">
           <span class="pframe__cap"><b>//</b> ${esc(c.label)}</span>
         </div>
         <div>
-          <span class="course-row__no">PROGRAM ${String(i + 1).padStart(2, '0')}</span>
+          <span class="course-row__no">${String(i + 1).padStart(2, '0')} — Category</span>
           <h2>${esc(c.title)}</h2>
+          ${(c.programs || []).length ? `<div class="course-row__progs">${c.programs.map(p => `<span>${esc(p)}</span>`).join('<i>|</i>')}</div>` : ''}
           <p>${esc(c.desc)}</p>
           <div class="course-row__tags">${(c.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
           <a href="${esc(c.link || 'contact.html')}" class="btn${c.accent ? '' : ' btn--glass'}"${c.external ? ' target="_blank" rel="noopener"' : ''}>${esc(c.button)} ⟶</a>
         </div>
       </article>`).join('');
+  }
+
+  /* ---- DIGITAL COURSES block (courses.html) ---- */
+  const digiBox = document.getElementById('digitalBox');
+  if (digiBox && C.digital) {
+    const d = C.digital;
+    digiBox.innerHTML = `
+      <div class="digi glass" data-a>
+        <div class="digi__body">
+          <h3>${esc(d.title)}</h3>
+          <p>${esc(d.desc)}</p>
+          <a href="${esc(d.link)}" class="btn" target="_blank" rel="noopener">${esc(d.button)} ⟶</a>
+        </div>
+        <ul class="digi__list">
+          ${(d.items || []).map(it => `<li><b>${esc(it.name)}</b><span>${esc(it.note)}</span></li>`).join('')}
+        </ul>
+      </div>`;
+  }
+
+  /* ---- LOW-COST LEARNING band (courses.html) ---- */
+  const lowBox = document.getElementById('lowcostBox');
+  if (lowBox && C.lowcost) {
+    const l = C.lowcost;
+    lowBox.innerHTML = `
+      <div class="lowcost glass" data-a>
+        <div class="glow"></div>
+        <span class="lowcost__tag">Low-Cost Learning</span>
+        <h3>${esc(l.title)}</h3>
+        <p>${esc(l.desc)}</p>
+        <a href="${esc(l.link)}" class="btn" target="_blank" rel="noopener">${esc(l.button)} ⟶</a>
+      </div>`;
+  }
+
+  /* ---- STRIKERS: mentor ID cards (about.html) ---- */
+  const strikers = document.getElementById('strikerGrid');
+  if (strikers && C.strikers) {
+    strikers.innerHTML = C.strikers.map((m, i) => `
+      <div class="idcard" data-a data-d="${((i % 3) * 0.07).toFixed(2)}">
+        <div class="idcard__top"><span class="logo-chip"><img src="assets/logo-mark.png" alt=""></span><span class="t">WEDA · SERVICE ID</span></div>
+        <div class="idcard__slot"></div>
+        <div class="idcard__photo"><img src="${esc(m.photo)}" alt="${esc(m.name)}" loading="lazy"></div>
+        <div class="idcard__body"><h3>${esc(m.name)}</h3><div class="idcard__spec">CLEARANCE — <b>${esc(m.subject).toUpperCase()}</b></div></div>
+        <div class="idcard__foot"><span class="idcard__barcode"></span><span class="idcard__no">${esc(m.id)}</span></div>
+      </div>`).join('');
+  }
+
+  /* ---- GOALKEEPER: support team (about.html) ---- */
+  const keeper = document.getElementById('keeperGrid');
+  if (keeper && C.goalkeeper) {
+    keeper.innerHTML = C.goalkeeper.map((g, i) => `
+      <div class="kcell glass glass--hov" data-a data-d="${(i * 0.08).toFixed(2)}">
+        <span class="kcell__role">${esc(g.role)}</span>
+        <b>${esc(g.name)}</b>
+        <p>${esc(g.desc)}</p>
+      </div>`).join('');
+  }
+
+  /* ---- FEE STRUCTURE tables (fees.html) ---- */
+  const feeBox = document.getElementById('feeTables');
+  if (feeBox && C.fees) {
+    const f = C.fees;
+    feeBox.innerHTML = (f.published ? '' : `
+      <div class="fee-warn" data-a>
+        <b>Fee figures not published yet.</b>
+        <span>The amounts below are placeholders. Real fees will appear here once the official fee structure is loaded into <code>js/content.js</code>.</span>
+      </div>`) + (f.programs || []).map((p, i) => `
+      <div class="fee-card glass" data-a data-d="${(i * 0.06).toFixed(2)}">
+        <div class="fee-card__head">
+          <h3>${esc(p.program)}</h3>
+          ${p.sub ? `<span>${esc(p.sub)}</span>` : ''}
+        </div>
+        <div class="fee-scroll">
+          <table class="fee-table">
+            <thead>
+              <tr><th scope="col">Particular</th><th scope="col">First Year</th><th scope="col">Second Year</th><th scope="col">Third Year</th></tr>
+            </thead>
+            <tbody>
+              ${(p.rows || []).map(r => `
+              <tr>
+                <th scope="row" data-l="Particular">${esc(r.particular)}</th>
+                <td data-l="First Year">${esc(r.y1)}</td>
+                <td data-l="Second Year">${esc(r.y2)}</td>
+                <td data-l="Third Year">${esc(r.y3)}</td>
+              </tr>`).join('')}
+            </tbody>
+            ${p.total ? `<tfoot>
+              <tr>
+                <th scope="row" data-l="Total">Total</th>
+                <td data-l="First Year">${esc(p.total.y1)}</td>
+                <td data-l="Second Year">${esc(p.total.y2)}</td>
+                <td data-l="Third Year">${esc(p.total.y3)}</td>
+              </tr>
+            </tfoot>` : ''}
+          </table>
+        </div>
+      </div>`).join('') + (f.note ? `<p class="fee-note" data-a>${esc(f.note)}</p>` : '');
+  }
+
+  const polaroidTab = (p, i) => `
+    <div class="polaroid${p.hold === 'tape' ? ' polaroid--tape' : ''}">
+      ${p.hold === 'tape' ? '' : '<span class="polaroid__pin"></span>'}
+      <img src="${esc(p.image)}" alt="${esc(p.caption)} — WEDA" loading="lazy">
+      <span class="polaroid__cap"><span>${esc(p.caption)}</span><b>${String(i + 1).padStart(2, '0')}</b></span>
+    </div>`;
+
+  /* ---- GALLERY: three tabbed categories (gallery.html) ---- */
+  const gtabs = document.getElementById('galleryTabs');
+  if (gtabs && C.galleryTabs) {
+    const cats = [
+      { key: 'achievements', label: 'Student Achievements' },
+      { key: 'mentors',      label: 'Our Mentors' },
+      { key: 'activities',   label: 'Our Activities' },
+    ].filter(c => (C.galleryTabs[c.key] || []).length);
+
+    gtabs.innerHTML = `
+      <div class="gtab-bar" role="tablist">
+        ${cats.map((c, i) => `<button class="gtab${i === 0 ? ' is-on' : ''}" role="tab" aria-selected="${i === 0}" aria-controls="gpanel-${c.key}" id="gtab-${c.key}" data-cat="${c.key}">${esc(c.label)}</button>`).join('')}
+      </div>
+      ${cats.map((c, i) => `
+        <div class="gpanel${i === 0 ? ' is-on' : ''}" id="gpanel-${c.key}" role="tabpanel" aria-labelledby="gtab-${c.key}"${i === 0 ? '' : ' hidden'}>
+          <div class="recon__grid">${C.galleryTabs[c.key].map(polaroidTab).join('')}</div>
+        </div>`).join('')}`;
+
+    gtabs.addEventListener('click', e => {
+      const btn = e.target.closest('.gtab');
+      if (!btn) return;
+      gtabs.querySelectorAll('.gtab').forEach(b => {
+        const on = b === btn;
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-selected', on);
+      });
+      gtabs.querySelectorAll('.gpanel').forEach(p => {
+        const on = p.id === `gpanel-${btn.dataset.cat}`;
+        p.classList.toggle('is-on', on);
+        p.hidden = !on;
+      });
+      ScrollTrigger.refresh();
+    });
   }
 
   const polaroid = (p, i, prefix) => `
