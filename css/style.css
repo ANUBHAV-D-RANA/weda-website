@@ -1039,6 +1039,16 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 /* 4:3 matches most of the camp photos exactly, so those lose no height at
    all — 3:2 was slicing the top and bottom off, taking people's heads. */
 .wcar--wide     .wcar__slide{aspect-ratio:4/3;flex-basis:calc((100% - 1 * clamp(10px,1.3vw,18px)) / 2);}
+
+/* Achiever badges arrive with their own red ring on white, so they get no
+   card around them — the slide is clipped to a circle, which trims the
+   white corners and lets the badge sit straight on the page. */
+.wcar--badge .wcar__slide{
+  aspect-ratio:1/1;flex-basis:calc((100% - 4 * clamp(10px,1.3vw,18px)) / 5);
+  background:none;border:none;box-shadow:none;border-radius:50%;
+}
+.wcar--badge .wcar__slide img{border-radius:50%;}
+.wcar--badge .wcar__slide:hover img{transform:scale(1.05);}
 /* the files are already cropped to frame, so no object-position nudge */
 .wcar__slide img{object-position:center center;}
 
@@ -1069,19 +1079,72 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 
 @media(max-width:1060px){
   .wcar--portrait .wcar__slide{flex-basis:calc((100% - 2 * clamp(10px,1.3vw,18px)) / 3);}
+  .wcar--badge .wcar__slide{flex-basis:calc((100% - 3 * clamp(10px,1.3vw,18px)) / 4);}
 }
 @media(max-width:780px){
   .wcar--portrait .wcar__slide{flex-basis:calc((100% - 1 * clamp(10px,1.3vw,18px)) / 2);}
   .wcar--wide .wcar__slide{flex-basis:100%;}
+  .wcar--badge .wcar__slide{flex-basis:calc((100% - 2 * clamp(10px,1.3vw,18px)) / 3);}
 }
 @media(max-width:520px){
   .wcar--portrait .wcar__slide{flex-basis:78%;}   /* next slide peeks = swipe cue */
   .wcar--wide .wcar__slide{flex-basis:92%;}
+  .wcar--badge .wcar__slide{flex-basis:calc((100% - 1 * clamp(10px,1.3vw,18px)) / 2);}
   .wcar__b{width:44px;height:44px;}
   .wcar__slide figcaption{font-size:14px;padding:28px 13px 11px;}
 }
 @media (prefers-reduced-motion:reduce){
   .wcar__slide img,.wcar__slide:hover img{transition:none;transform:none;}
+}
+
+/* ---- ACHIEVER VIDEOS (YouTube Shorts) ---- */
+.vidgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,20px);}
+.vidcard{
+  position:relative;aspect-ratio:9/16;border-radius:14px;overflow:hidden;
+  background:var(--ink);border:1px solid var(--glass-brd);
+  box-shadow:0 10px 30px -18px rgba(12,12,14,.4);
+}
+.vidcard iframe{width:100%;height:100%;border:0;display:block;}
+.vidcard__play{
+  position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;
+  background:none;display:block;cursor:pointer;
+}
+/* oardefault is the Shorts poster at its true vertical aspect, so it fills
+   the card as-is. If it ever 404s we fall back to the 16:9 hqdefault, which
+   needs scaling up to avoid letterbox bars — hence .is-wide. */
+.vidcard__play img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s var(--ease-o),filter .4s var(--ease-o);
+}
+.vidcard__play img.is-wide{transform:scale(1.75);}
+.vidcard__play:hover img{filter:brightness(.85);transform:scale(1.04);}
+.vidcard__play:hover img.is-wide{transform:scale(1.82);}
+.vidcard__btn{
+  position:absolute;left:50%;top:50%;translate:-50% -50%;
+  width:60px;height:60px;border-radius:50%;
+  background:var(--red);box-shadow:0 6px 26px rgba(225,29,46,.45);
+  display:grid;place-items:center;transition:transform .3s var(--ease-o);
+}
+.vidcard__btn::after{
+  content:"";border-style:solid;border-width:11px 0 11px 18px;
+  border-color:transparent transparent transparent var(--wht-pure);
+  margin-left:5px;
+}
+.vidcard__play:hover .vidcard__btn{transform:scale(1.1);}
+
+.vidnote{
+  display:flex;align-items:center;justify-content:space-between;gap:clamp(14px,2vw,28px);
+  flex-wrap:wrap;margin-top:clamp(18px,2.2vw,28px);
+}
+.vidnote p{color:var(--gry-lt);font-size:15px;line-height:1.7;max-width:60ch;}
+@media(max-width:900px){.vidgrid{grid-template-columns:1fr 1fr;}}
+@media(max-width:460px){
+  .vidgrid{grid-template-columns:1fr;}
+  .vidcard{aspect-ratio:3/4;}     /* a full 9:16 card is too tall on a phone */
+  .vidnote{flex-direction:column;align-items:flex-start;}
+}
+@media (prefers-reduced-motion:reduce){
+  .vidcard__play img,.vidcard__play:hover img{transition:none;}
 }
 
 /* ---- GALLERY TABS ---- */

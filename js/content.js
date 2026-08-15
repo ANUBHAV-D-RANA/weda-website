@@ -328,6 +328,48 @@ window.WEDA_CONTENT = {
     ],
   },
 
+  /* ------- ACHIEVERS carousel (about.html) -------
+     Split out of the two 3x3 collage sheets, one badge per file.
+     No names attached: none were supplied, and these are children —
+     add  name: "..."  to a block only if you have permission to publish
+     it, and it will appear as a caption under the photo. */
+  achieverBadges: [
+    { image: "assets/achiever-01.jpg" },
+    { image: "assets/achiever-02.jpg" },
+    { image: "assets/achiever-03.jpg" },
+    { image: "assets/achiever-04.jpg" },
+    { image: "assets/achiever-05.jpg" },
+    { image: "assets/achiever-06.jpg" },
+    { image: "assets/achiever-07.jpg" },
+    { image: "assets/achiever-08.jpg" },
+    { image: "assets/achiever-09.jpg" },
+    { image: "assets/achiever-10.jpg" },
+    { image: "assets/achiever-11.jpg" },
+    { image: "assets/achiever-12.jpg" },
+    { image: "assets/achiever-13.jpg" },
+    { image: "assets/achiever-14.jpg" },
+    { image: "assets/achiever-15.jpg" },
+    { image: "assets/achiever-16.jpg" },
+    { image: "assets/achiever-17.jpg" },
+    { image: "assets/achiever-18.jpg" },
+  ],
+
+  /* ------- ACHIEVER VIDEOS (about.html) -------
+     YouTube Shorts. "id" is the bit after /shorts/ in the URL, so
+     https://www.youtube.com/shorts/vGuiGUw8dv0  ->  id: "vGuiGUw8dv0"
+     Add or remove { ... }, blocks to change how many are shown. */
+  achieverVideos: {
+    note: "Want to see more? Every result, drill and camp story is on our YouTube channel.",
+    channel: "https://www.youtube.com/@TheWinningEdgeDefence",
+    channelCta: "Visit our YouTube channel",
+    items: [
+      { id: "vGuiGUw8dv0" },
+      { id: "VJ4T8NpbhTk" },
+      { id: "Nl5R-RhiOb4" },
+      { id: "_856gUyR1QQ" },
+    ],
+  },
+
   /* ------- GALLERY carousel (about.html) -------
      Life at the academy. All 3:2 so the frame never jumps.
      caption is optional — leave "" for no label. */
