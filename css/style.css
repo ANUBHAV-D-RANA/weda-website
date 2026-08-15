@@ -1042,7 +1042,8 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 /* ---- OUR PREPARATION ---- */
 .prep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,20px);}
 .prep-card{display:flex;flex-direction:column;overflow:hidden;padding:0;}
-.prep-card__img{aspect-ratio:4/3;border-radius:0;border:none;}
+/* matches the artwork's own ratio so the baked-in headline never crops */
+.prep-card__img{aspect-ratio:1596/986;border-radius:0;border:none;}
 .prep-card__img img{width:100%;height:100%;object-fit:cover;object-position:center;}
 .prep-card__body{padding:clamp(16px,1.8vw,22px);display:flex;flex-direction:column;gap:7px;flex:1;}
 .prep-card__body h3{font-size:23px;line-height:1;color:var(--ink);}
@@ -1066,7 +1067,7 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 .prep-card:hover .prep-card__go .arr{transform:translateX(4px);}
 .prep-card__go .arr{transition:transform .3s var(--ease-o);}
 @media(max-width:980px){.prep-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:520px){.prep-grid{grid-template-columns:1fr;}.prep-card__img{aspect-ratio:16/9;}}
+@media(max-width:520px){.prep-grid{grid-template-columns:1fr;}}
 
 /* ---- WEDA ECOSYSTEM ---- */
 /* auto-fit so the row stays balanced whether there are 3, 4 or 5 tiles */

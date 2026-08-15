@@ -66,18 +66,15 @@ window.WEDA_CONTENT = {
      One card per exam. "note" is the small supporting line.
      "entry" is the little label in the corner of the card.
 
-     NOTE: these cards are deliberately text-only. The old
-     assets/course-*.jpg files are advertising creatives with text
-     baked into them ("BEST RIMC COACHING…"), so they cropped badly
-     and did not match their card. To use photographs here, drop
-     clean per-exam photos into assets/ and add an
-     image: "assets/your-photo.jpg" line to any block below.
+     These mirror the four categories on the Courses page and share its
+     artwork, one image per card. The creatives carry their own headline
+     type, so the card frame matches the source ratio and never crops.
      ============================================================ */
   preparation: [
-    { name: "Sainik School", entry: "Class 6 & 9", note: "AISSEE entrance preparation for both entry points.", link: "courses.html#course-1" },
-    { name: "RMS",           entry: "School Entry", note: "Rashtriya Military School entrance preparation.",   link: "courses.html#course-1" },
-    { name: "RIMC",          entry: "Class 8 Entry", note: "Written exam, Viva Voce and interview readiness.",  link: "courses.html#course-2" },
-    { name: "NDA",           entry: "Officer Entry", note: "Written examination plus full SSB preparation.",    link: "courses.html#course-3" },
+    { name: "Sainik School",  entry: "Class 6 & 9",   note: "Also covers RMS, UP Sainik School and JNV entrance.",     image: "assets/course-sainik.jpg", link: "courses.html#course-1" },
+    { name: "RIMC",           entry: "Class 8 Entry", note: "Written exam, Viva Voce and interview readiness.",        image: "assets/course-rimc.jpg",   link: "courses.html#course-2" },
+    { name: "NDA",            entry: "Officer Entry", note: "Written examination plus full SSB preparation.",          image: "assets/course-nda.jpg",    link: "courses.html#course-3" },
+    { name: "SSB",            entry: "Interview",     note: "Psychology tests, GTO tasks and the personal interview.", image: "assets/course-ssb.jpg",    link: "courses.html#course-4" },
   ],
 
   /* ============================================================
