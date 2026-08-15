@@ -1097,56 +1097,6 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
   .wcar__slide img,.wcar__slide:hover img{transition:none;transform:none;}
 }
 
-/* ---- ACHIEVER VIDEOS (YouTube Shorts) ---- */
-.vidgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,20px);}
-.vidcard{
-  position:relative;aspect-ratio:9/16;border-radius:14px;overflow:hidden;
-  background:var(--ink);border:1px solid var(--glass-brd);
-  box-shadow:0 10px 30px -18px rgba(12,12,14,.4);
-}
-.vidcard iframe{width:100%;height:100%;border:0;display:block;}
-.vidcard__play{
-  position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;
-  background:none;display:block;cursor:pointer;
-}
-/* oardefault is the Shorts poster at its true vertical aspect, so it fills
-   the card as-is. If it ever 404s we fall back to the 16:9 hqdefault, which
-   needs scaling up to avoid letterbox bars — hence .is-wide. */
-.vidcard__play img{
-  width:100%;height:100%;object-fit:cover;
-  transition:transform .6s var(--ease-o),filter .4s var(--ease-o);
-}
-.vidcard__play img.is-wide{transform:scale(1.75);}
-.vidcard__play:hover img{filter:brightness(.85);transform:scale(1.04);}
-.vidcard__play:hover img.is-wide{transform:scale(1.82);}
-.vidcard__btn{
-  position:absolute;left:50%;top:50%;translate:-50% -50%;
-  width:60px;height:60px;border-radius:50%;
-  background:var(--red);box-shadow:0 6px 26px rgba(225,29,46,.45);
-  display:grid;place-items:center;transition:transform .3s var(--ease-o);
-}
-.vidcard__btn::after{
-  content:"";border-style:solid;border-width:11px 0 11px 18px;
-  border-color:transparent transparent transparent var(--wht-pure);
-  margin-left:5px;
-}
-.vidcard__play:hover .vidcard__btn{transform:scale(1.1);}
-
-.vidnote{
-  display:flex;align-items:center;justify-content:space-between;gap:clamp(14px,2vw,28px);
-  flex-wrap:wrap;margin-top:clamp(18px,2.2vw,28px);
-}
-.vidnote p{color:var(--gry-lt);font-size:15px;line-height:1.7;max-width:60ch;}
-@media(max-width:900px){.vidgrid{grid-template-columns:1fr 1fr;}}
-@media(max-width:460px){
-  .vidgrid{grid-template-columns:1fr;}
-  .vidcard{aspect-ratio:3/4;}     /* a full 9:16 card is too tall on a phone */
-  .vidnote{flex-direction:column;align-items:flex-start;}
-}
-@media (prefers-reduced-motion:reduce){
-  .vidcard__play img,.vidcard__play:hover img{transition:none;}
-}
-
 /* ---- GALLERY TABS ---- */
 .gtab-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:clamp(22px,2.6vw,34px);}
 .gtab{

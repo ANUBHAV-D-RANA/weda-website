@@ -238,40 +238,6 @@ if (!reduced && typeof Lenis !== 'undefined') {
   /* ---- ACHIEVERS: selected cadets (about.html) ---- */
   buildCarousel(document.getElementById('achieverGrid'), C.achieverBadges, { variant: 'badge', label: 'Our achievers' });
 
-  /* ---- ACHIEVER VIDEOS: YouTube Shorts (about.html) ----
-     Rendered as click-to-play posters rather than four live iframes:
-     embedding them outright would pull YouTube's player and its cookies
-     on every page load, for videos most visitors never press. The iframe
-     is created only when someone actually clicks. */
-  const vidBox = document.getElementById('achieverVideos');
-  if (vidBox && C.achieverVideos) {
-    const V = C.achieverVideos;
-    vidBox.innerHTML = `
-      <div class="vidgrid">
-        ${(V.items || []).map((v, i) => `
-          <div class="vidcard" data-a data-d="${(i * 0.06).toFixed(2)}" data-id="${esc(v.id)}">
-            <button type="button" class="vidcard__play" aria-label="Play video ${i + 1}">
-              <img src="https://i.ytimg.com/vi/${esc(v.id)}/oardefault.jpg" alt="" loading="lazy" decoding="async"
-                   onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${esc(v.id)}/hqdefault.jpg';this.classList.add('is-wide')">
-              <span class="vidcard__btn" aria-hidden="true"></span>
-            </button>
-          </div>`).join('')}
-      </div>
-      ${V.note ? `<div class="vidnote" data-a>
-        <p>${esc(V.note)}</p>
-        <a href="${esc(V.channel)}" class="btn btn--glass" target="_blank" rel="noopener">${esc(V.channelCta || 'Visit our YouTube channel')} ⟶</a>
-      </div>` : ''}`;
-
-    vidBox.addEventListener('click', e => {
-      const btn = e.target.closest('.vidcard__play');
-      if (!btn) return;
-      const card = btn.closest('.vidcard');
-      const id = card.dataset.id;
-      card.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0&playsinline=1"
-        title="WEDA achiever video" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
-    });
-  }
 
   /* ---- FEE STRUCTURE tables (fees.html) ---- */
   const feeBox = document.getElementById('feeTables');

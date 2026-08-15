@@ -354,22 +354,6 @@ window.WEDA_CONTENT = {
     { image: "assets/achiever-18.jpg" },
   ],
 
-  /* ------- ACHIEVER VIDEOS (about.html) -------
-     YouTube Shorts. "id" is the bit after /shorts/ in the URL, so
-     https://www.youtube.com/shorts/vGuiGUw8dv0  ->  id: "vGuiGUw8dv0"
-     Add or remove { ... }, blocks to change how many are shown. */
-  achieverVideos: {
-    note: "Want to see more? Every result, drill and camp story is on our YouTube channel.",
-    channel: "https://www.youtube.com/@TheWinningEdgeDefence",
-    channelCta: "Visit our YouTube channel",
-    items: [
-      { id: "vGuiGUw8dv0" },
-      { id: "VJ4T8NpbhTk" },
-      { id: "Nl5R-RhiOb4" },
-      { id: "_856gUyR1QQ" },
-    ],
-  },
-
   /* ------- GALLERY carousel (about.html) -------
      Life at the academy. All 3:2 so the frame never jumps.
      caption is optional — leave "" for no label. */
