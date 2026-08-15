@@ -124,8 +124,51 @@ window.WEDA_CONTENT = {
      ============================================================ */
   googleReviews: {
     profileUrl: "https://share.google/UaB1ukRY7ot2y6hwH",
-    writeReviewUrl: "https://search.google.com/local/writereview?placeid=",
     listingName: "The Winning Edge - RIMC, RMS, Sainik School Coaching in Dehradun",
+
+    /* Headline numbers shown next to the stars.
+       Update these whenever the real figures on the listing change. */
+    rating: 4.6,
+    total: 350,
+
+    /* ---------------------------------------------------------------
+       REVIEWS SHOWN ON THE HOMEPAGE
+
+       How this works: if a Google API key is ever configured, the page
+       uses live data from /api/reviews and ignores this list entirely.
+       Until then it shows the reviews below.
+
+       >>> IMPORTANT <<<
+       These were carried over from WEDA's own existing website, where
+       they appeared under the 4.6-star Google badge. They have NOT been
+       checked against the live Google listing. Confirm each one is a
+       real Google review, or replace the list with copies of the real
+       ones. Never add a review that was not actually written by a
+       customer on Google.
+
+       ORDER = the order they appear on the page. Put the newest review
+       first. (Nobody can work out "latest" automatically from this file —
+       it has no dates until you add them.)
+
+       TO EDIT: each review is one { ... }, block.
+       name  = reviewer's name exactly as it appears on Google
+       stars = 1 to 5
+       when  = e.g. "3 months ago"  (leave "" to hide the date)
+       text  = the review, copied word for word — do not rewrite it
+       photo = OPTIONAL reviewer picture, e.g. "assets/review-anita.jpg".
+               Save the image into the assets/ folder first. If you leave
+               photo out, the card shows a red circle with their initial.
+       --------------------------------------------------------------- */
+    reviews: [
+      { name: "Sumit",         stars: 5, when: "", photo: "", text: "The disciplined environment prepares students not just academically but mentally and physically for a career in the armed forces." },
+      { name: "Amit Mishra",   stars: 5, when: "", photo: "", text: "Best coaching for RIMC preparation in Dehradun! Focus on written exams and personality development — crucial for SSB interviews." },
+      { name: "Shivam Katyal", stars: 5, when: "", photo: "", text: "Remarkable improvement — rigorous training with strong focus on current affairs, maths and English boosted my son's confidence." },
+      { name: "Amrita Kaur",   stars: 5, when: "", photo: "", text: "The Winning Edge lives up to its name! Intensive study plan focused on the RIMC syllabus and weekly tests for consistent preparation." },
+      { name: "R. K.",         stars: 5, when: "", photo: "", text: "Wonderful coaching helped my son crack AISSEE and get selected in Sainik School Satara. Sincere thanks to Col. Amardeep Sir and team." },
+      { name: "Satwant Singh", stars: 5, when: "", photo: "", text: "Better experience for a better future — my son attended summer camp at WEDA. The best coaching centre." },
+      { name: "Kanakalata Devi", stars: 5, when: "", photo: "", text: "Doing a great job — teaching with care and moral values, without any fee. Jai Hind, saluting Sir!" },
+      { name: "Jyoti Thakur",  stars: 5, when: "", photo: "", text: "Everything was planned at their best level — the webinar enhanced the knowledge of students brilliantly." },
+    ],
   },
 
   /* ============================================================

@@ -235,6 +235,20 @@ if (!reduced && typeof Lenis !== 'undefined') {
   const grBox = document.getElementById('googleReviews');
   if (grBox && C.googleReviews) {
     const G = C.googleReviews;
+
+    /* The page-wide [data-a] reveal is registered once at load, so anything
+       injected later (this section arrives after a fetch) would stay stuck
+       at opacity 0. Reveal freshly injected nodes ourselves. */
+    const revealNew = root => {
+      if (typeof gsap === 'undefined') return;
+      root.querySelectorAll('[data-a]').forEach(el => {
+        gsap.to(el, {
+          y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+          delay: parseFloat(el.dataset.d || 0),
+          scrollTrigger: { trigger: el, start: 'top 95%', once: true },
+        });
+      });
+    };
     const stars = n => {
       const full = Math.round(n || 0);
       return `<span class="grstars" aria-label="${n} out of 5">${'★'.repeat(full)}${'☆'.repeat(Math.max(0, 5 - full))}</span>`;
@@ -254,6 +268,41 @@ if (!reduced && typeof Lenis !== 'undefined') {
       </div>
       ${note ? `<p class="greviews__note">${note}</p>` : ''}`;
 
+    const card = (name, rating, when, text, photo) => `
+      <article class="gcard glass">
+        <header>
+          ${photo
+            ? `<img class="gcard__pic" src="${esc(photo)}" alt="${esc(name || '')}" width="38" height="38" decoding="async" referrerpolicy="no-referrer"
+                 onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'gcard__pic gcard__pic--ph',textContent:'${esc((name || '?').charAt(0))}'}))">`
+            : `<span class="gcard__pic gcard__pic--ph">${esc((name || '?').charAt(0))}</span>`}
+          <div>
+            <b>${esc(name || 'Google user')}</b>
+            <span>${stars(rating)}${when ? ` · ${esc(when)}` : ''}</span>
+          </div>
+          <span class="gcard__g" aria-hidden="true">G</span>
+        </header>
+        <p>${esc(text).slice(0, 320)}${text && text.length > 320 ? '…' : ''}</p>
+      </article>`;
+
+    const summaryBlock = (rating, total) => `
+      <div class="greviews__score">
+        <b>${typeof rating === 'number' ? rating.toFixed(1) : '★'}</b>
+        ${typeof rating === 'number' ? stars(rating) : ''}
+        <small>${total ? `${Number(total).toLocaleString('en-IN')}+ Google reviews` : 'See our reviews on Google'}</small>
+      </div>`;
+
+    /* Fallback: the reviews kept in content.js. Used when the Google API
+       is not configured. Nothing here is generated — it is whatever the
+       academy has put in that file. */
+    const renderFallback = () => {
+      grBox.innerHTML = shell(
+        summaryBlock(G.rating, G.total),
+        (G.reviews || []).map(r => card(r.name, r.stars, r.when, r.text, r.photo)).join(''),
+        'Reviews from our Google Business Profile. Open the listing to read every review and leave your own.'
+      );
+      revealNew(grBox); if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+    };
+
     // Neutral placeholder while the request is in flight.
     grBox.innerHTML = shell(
       `<div class="greviews__score"><b>—</b>${stars(0)}<small>Loading Google rating…</small></div>`,
@@ -263,49 +312,19 @@ if (!reduced && typeof Lenis !== 'undefined') {
     fetch('/api/reviews')
       .then(r => r.json())
       .then(d => {
-        const hasSummary = d && d.ok && typeof d.rating === 'number';
-        const summary = hasSummary
-          ? `<div class="greviews__score">
-               <b>${d.rating.toFixed(1)}</b>
-               ${stars(d.rating)}
-               <small>${d.total ? `${d.total.toLocaleString('en-IN')} Google reviews` : 'Google reviews'}</small>
-             </div>`
-          : `<div class="greviews__score">
-               <b>★</b>
-               <small>See our rating and reviews on Google</small>
-             </div>`;
-
-        const list = (d.reviews || []).length
-          ? d.reviews.map(rv => `
-              <article class="gcard glass">
-                <header>
-                  ${rv.photo
-                    ? `<img class="gcard__pic" src="${esc(rv.photo)}" alt="" loading="lazy" referrerpolicy="no-referrer">`
-                    : `<span class="gcard__pic gcard__pic--ph">${esc((rv.author || '?').charAt(0))}</span>`}
-                  <div>
-                    <b>${esc(rv.author || 'Google user')}</b>
-                    <span>${stars(rv.rating)}${rv.relative ? ` · ${esc(rv.relative)}` : ''}</span>
-                  </div>
-                  <span class="gcard__g" aria-hidden="true">G</span>
-                </header>
-                <p>${esc(rv.text).slice(0, 320)}${rv.text && rv.text.length > 320 ? '…' : ''}</p>
-              </article>`).join('')
-          : '';
-
-        const note = hasSummary
-          ? 'Rating and reviews are pulled from our official Google Business Profile. Google returns up to five reviews at a time — open the listing to read them all.'
-          : 'Live Google reviews are not being served on this deployment yet. Open our Google listing to read every review.';
-
-        grBox.innerHTML = shell(summary, list, note);
-        if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+        // Live Google data wins whenever it is available.
+        if (d && d.ok && typeof d.rating === 'number') {
+          grBox.innerHTML = shell(
+            summaryBlock(d.rating, d.total),
+            (d.reviews || []).map(rv => card(rv.author, rv.rating, rv.relative, rv.text, rv.photo)).join(''),
+            'Live from our official Google Business Profile. Google returns up to five reviews at a time — open the listing to read them all.'
+          );
+          revealNew(grBox); if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+        } else {
+          renderFallback();
+        }
       })
-      .catch(() => {
-        grBox.innerHTML = shell(
-          `<div class="greviews__score"><b>★</b><small>See our rating and reviews on Google</small></div>`,
-          '',
-          'Could not reach Google right now. Open our listing to read every review.'
-        );
-      });
+      .catch(renderFallback);
   }
 
   const polaroid = (p, i, prefix) => `
