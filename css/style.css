@@ -829,7 +829,7 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 .fee-pane.is-on{display:block;}
 
 /* ---- batch table ---- */
-.fee-table--batches{min-width:780px;border-collapse:separate;border-spacing:0;}
+.fee-table--batches{min-width:940px;border-collapse:separate;border-spacing:0;}
 .fee-table--batches thead th{
   vertical-align:bottom;padding:0 16px 14px;
   border-bottom:1.5px solid var(--glass-brd-hi);
@@ -877,9 +877,9 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
   font-family:var(--font-m);font-size:10px;letter-spacing:.14em;color:var(--red-hot);font-weight:600;
 }
 
-.c-fee{text-align:right!important;white-space:nowrap;width:150px;}
+.c-fee{text-align:right!important;white-space:nowrap;width:140px;}
 .fee-money{
-  font-family:var(--font-d);font-size:25px;line-height:1;letter-spacing:.005em;
+  font-family:var(--font-d);font-size:23px;line-height:1;letter-spacing:.005em;
   color:var(--ink);display:inline-flex;align-items:baseline;gap:2px;
   font-variant-numeric:tabular-nums;
 }
@@ -887,7 +887,7 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 /* empty cell: a dash on the same baseline as the prices beside it,
    so the column still reads as a straight line down the page */
 .fee-na{
-  font-family:var(--font-d);font-size:25px;line-height:1;
+  font-family:var(--font-d);font-size:23px;line-height:1;
   color:var(--gry);opacity:.35;
 }
 
@@ -931,9 +931,13 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 
   .c-fee{
     display:flex!important;justify-content:space-between;align-items:center;
-    width:auto;text-align:right!important;
+    width:auto;text-align:right!important;gap:12px;
   }
-  .fee-money{font-size:21px;}
+  /* the label must give way, not the amount — "Offline + Schooling &
+     Hostel" is long enough to push ₹2,60,000 off the card otherwise */
+  .c-fee::before{flex:1 1 auto!important;min-width:0;white-space:normal;line-height:1.35;}
+  .c-fee .fee-money,.c-fee .fee-na{flex:0 0 auto;}
+  .fee-money{font-size:20px;}
   .c-rem{
     display:block!important;max-width:none;text-align:left!important;
     padding-bottom:15px!important;font-size:12.5px;

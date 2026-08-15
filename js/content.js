@@ -256,14 +256,22 @@ window.WEDA_CONTENT = {
       { key: "crash", label: "Crash Course" },
     ],
 
-    /* online / offline hold the fee for each duration.
-       The sheet lists a single "Offline" mode, and its own remark on
-       the SS6 row records that it excludes schooling and hostel. */
+    /* Three modes per batch, each priced by duration.
+
+       online          — from the sheet
+       offlineHostel   — offline WITH schooling + hostel. NOT in the
+                         spreadsheet; supplied separately by WEDA and
+                         offered for NDA only, full year. Leave "" for
+                         any batch that does not offer it.
+       offline         — offline WITHOUT schooling + hostel, i.e. the
+                         sheet's single "Offline" column, matching its
+                         own remark on the SS6 row. */
     batches: [
       {
         batch: "Sainik School – Class 6",
         code: "SS6",
         online:  { y1: "₹49,500", m6: "₹36,500", crash: "₹20,500" },
+        offlineHostel: { y1: "", m6: "", crash: "" },
         offline: { y1: "₹52,500", m6: "₹39,500", crash: "₹23,500" },
         remark: "One batch covers all four Class 6 entrances — Sainik School, RMS, UP Sainik School and JNV.",
       },
@@ -271,6 +279,7 @@ window.WEDA_CONTENT = {
         batch: "Sainik School – Class 9",
         code: "SS9",
         online:  { y1: "₹49,500", m6: "₹36,500", crash: "₹20,500" },
+        offlineHostel: { y1: "", m6: "", crash: "" },
         offline: { y1: "₹52,500", m6: "₹39,500", crash: "₹23,500" },
         remark: "Class 9 lateral entry — Maths, Science, English, Social Science and General Knowledge.",
       },
@@ -278,6 +287,7 @@ window.WEDA_CONTENT = {
         batch: "RIMC",
         code: "RIMC",
         online:  { y1: "₹50,500", m6: "₹37,500", crash: "₹22,500" },
+        offlineHostel: { y1: "", m6: "", crash: "" },
         offline: { y1: "₹58,500", m6: "₹40,500", crash: "₹25,500" },
         remark: "Written paper plus Viva Voce drilling for the Class 8 entry to Dehradun.",
       },
@@ -285,6 +295,7 @@ window.WEDA_CONTENT = {
         batch: "NDA",
         code: "NDA",
         online:  { y1: "₹65,000", m6: "₹36,500", crash: "₹20,500" },
+        offlineHostel: { y1: "₹2,60,000", m6: "", crash: "" },
         offline: { y1: "₹75,000", m6: "₹37,500", crash: "₹22,500" },
         remark: "Mathematics and General Ability Test, followed by the full SSB assault course.",
       },
@@ -292,6 +303,7 @@ window.WEDA_CONTENT = {
         batch: "RMS Interview Course",
         code: "RMS-INT",
         online:  { y1: "", m6: "", crash: "₹9,500" },
+        offlineHostel: { y1: "", m6: "", crash: "" },
         offline: { y1: "", m6: "", crash: "" },
         remark: "10-day intensive. Interview board practice and personality development.",
       },
@@ -299,6 +311,7 @@ window.WEDA_CONTENT = {
         batch: "RIMC Interview Course",
         code: "RIMC-INT",
         online:  { y1: "", m6: "", crash: "₹12,500" },
+        offlineHostel: { y1: "", m6: "", crash: "" },
         offline: { y1: "", m6: "", crash: "" },
         remark: "10-day intensive. Viva Voce rehearsal, current affairs and spoken confidence.",
       },

@@ -262,7 +262,8 @@ if (!reduced && typeof Lenis !== 'undefined') {
               <th scope="col" class="c-sno">#</th>
               <th scope="col" class="c-batch">Batch</th>
               <th scope="col" class="c-fee">Online</th>
-              <th scope="col" class="c-fee">Offline<small>excludes schooling &amp; hostel</small></th>
+              <th scope="col" class="c-fee">Offline<small>with schooling &amp; hostel</small></th>
+              <th scope="col" class="c-fee">Offline<small>without schooling &amp; hostel</small></th>
               <th scope="col" class="c-rem">Remark</th>
             </tr>
           </thead>
@@ -275,6 +276,7 @@ if (!reduced && typeof Lenis !== 'undefined') {
                   ${b.code ? `<span class="fee-code">${esc(b.code)}</span>` : ""}
                 </th>
                 <td class="c-fee" data-l="Online">${money(b.online && b.online[key])}</td>
+                <td class="c-fee" data-l="Offline + Schooling &amp; Hostel">${money(b.offlineHostel && b.offlineHostel[key])}</td>
                 <td class="c-fee" data-l="Offline">${money(b.offline && b.offline[key])}</td>
                 <td class="c-rem" data-l="Remark">${b.remark ? esc(b.remark) : ""}</td>
               </tr>`).join("")}
