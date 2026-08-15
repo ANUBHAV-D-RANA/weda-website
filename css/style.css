@@ -1032,10 +1032,13 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 }
 .wcar__slide:hover img{transform:scale(1.035);}
 
-/* fixed frames — this is what makes every photo the same size */
-.wcar--portrait .wcar__slide{aspect-ratio:4/5;flex-basis:calc((100% - 3 * clamp(10px,1.3vw,18px)) / 4);}
+/* fixed frames — this is what makes every photo the same size.
+   Portraits are square: it is the only ratio every supplied source can
+   fill by cropping alone, so no canvas ever has to be invented. */
+.wcar--portrait .wcar__slide{aspect-ratio:1/1;flex-basis:calc((100% - 3 * clamp(10px,1.3vw,18px)) / 4);}
 .wcar--wide     .wcar__slide{aspect-ratio:3/2;flex-basis:calc((100% - 1 * clamp(10px,1.3vw,18px)) / 2);}
-.wcar--wide .wcar__slide img{object-position:center center;}
+/* the files are already cropped to frame, so no object-position nudge */
+.wcar__slide img{object-position:center center;}
 
 .wcar__slide figcaption{
   position:absolute;left:0;right:0;bottom:0;padding:34px 16px 13px;

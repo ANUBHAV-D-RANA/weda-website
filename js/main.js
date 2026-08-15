@@ -84,17 +84,26 @@ if (!reduced && typeof Lenis !== 'undefined') {
   const buildCarousel = (mount, slides, opt = {}) => {
     if (!mount || !slides || !slides.length) return;
     const variant = opt.variant || 'portrait';   // portrait | wide
+    const n = slides.length;
+
+    /* The reel never ends: the slide list is rendered three times over and
+       we sit in the middle copy. Once a scroll settles past a copy boundary
+       we jump back by exactly one copy width — instantly, so it is
+       invisible — which leaves infinite runway in both directions. */
+    const LOOP = n >= 3;
+    const reps = LOOP ? 3 : 1;
+    const cell = (s, i, copy) => `
+      <figure class="wcar__slide"${copy ? ' aria-hidden="true"' : ''}>
+        <img src="${esc(s.image || s.photo)}" alt="${copy ? '' : esc(s.name || s.caption || opt.label || 'WEDA')}"
+             loading="${!copy && i < 4 ? 'eager' : 'lazy'}" decoding="async">
+        ${(s.name || s.caption) ? `<figcaption>${esc(s.name || s.caption)}</figcaption>` : ''}
+      </figure>`;
 
     mount.innerHTML = `
       <div class="wcar wcar--${variant}" data-a>
         <div class="wcar__viewport">
           <div class="wcar__track" tabindex="0" role="region" aria-label="${esc(opt.label || 'Photo carousel')}">
-            ${slides.map((s, i) => `
-              <figure class="wcar__slide">
-                <img src="${esc(s.image || s.photo)}" alt="${esc(s.name || s.caption || opt.label || 'WEDA')}"
-                     loading="${i < 3 ? 'eager' : 'lazy'}" decoding="async">
-                ${(s.name || s.caption) ? `<figcaption>${esc(s.name || s.caption)}</figcaption>` : ''}
-              </figure>`).join('')}
+            ${Array.from({ length: reps }, (_, c) => slides.map((s, i) => cell(s, i, c !== (LOOP ? 1 : 0))).join('')).join('')}
           </div>
         </div>
         <div class="wcar__bar">
@@ -111,36 +120,44 @@ if (!reduced && typeof Lenis !== 'undefined') {
     const btns = mount.querySelectorAll('.wcar__b');
     let wanted = null;
 
+    const all = () => [...track.querySelectorAll('.wcar__slide')];
     const positions = () => {
-      const list = [...track.querySelectorAll('.wcar__slide')];
+      const list = all();
       if (!list.length) return [];
       const base = list[0].offsetLeft;
       return list.map(s => s.offsetLeft - base);
     };
     const maxScroll = () => Math.max(0, track.scrollWidth - track.clientWidth);
+    const setWidth = () => (LOOP ? track.scrollWidth / reps : maxScroll());
 
-    // dots are pages, not slides — 16 photos should not mean 16 dots
-    const pageCount = () => Math.max(1, Math.ceil(maxScroll() / Math.max(1, track.clientWidth)) + 1);
-
-    const renderDots = () => {
-      const n = pageCount();
-      if (n <= 1) { dots.innerHTML = ''; return; }
-      dots.innerHTML = Array.from({ length: n }, (_, i) =>
-        `<button type="button" class="wcar__dot" role="tab" data-page="${i}" aria-label="Go to slide group ${i + 1}"></button>`).join('');
-    };
+    dots.innerHTML = Array.from({ length: n }, (_, i) =>
+      `<button type="button" class="wcar__dot" role="tab" data-i="${i}" aria-label="Slide ${i + 1}"></button>`).join('');
 
     const sync = () => {
-      const max = maxScroll();
-      btns.forEach(b => {
-        const back = Number(b.dataset.dir) < 0;
-        b.disabled = back ? track.scrollLeft <= 2 : track.scrollLeft >= max - 2;
-      });
-      const n = pageCount();
-      const active = max <= 0 ? 0 : Math.round((track.scrollLeft / max) * (n - 1));
+      if (!LOOP) {
+        const max = maxScroll();
+        btns.forEach(b => {
+          const back = Number(b.dataset.dir) < 0;
+          b.disabled = back ? track.scrollLeft <= 2 : track.scrollLeft >= max - 2;
+        });
+      }
+      const pos = positions();
+      let nearest = 0, best = Infinity;
+      pos.forEach((x, i) => { const d = Math.abs(x - track.scrollLeft); if (d < best) { best = d; nearest = i; } });
+      const active = ((nearest % n) + n) % n;
       dots.querySelectorAll('.wcar__dot').forEach((d, i) => {
         d.classList.toggle('is-on', i === active);
         d.setAttribute('aria-selected', i === active);
       });
+    };
+
+    /* Re-centre on the middle copy. Only ever called once scrolling has
+       stopped, so it never interrupts an animation the user can see. */
+    const recentre = () => {
+      if (!LOOP) return;
+      const sw = setWidth();
+      if (track.scrollLeft < sw * 0.5) track.scrollLeft += sw;
+      else if (track.scrollLeft > sw * 1.5) track.scrollLeft -= sw;
     };
 
     const go = dir => {
@@ -152,31 +169,61 @@ if (!reduced && typeof Lenis !== 'undefined') {
       track.scrollTo({ left: wanted, behavior: 'smooth' });
     };
 
-    btns.forEach(b => b.addEventListener('click', () => go(Number(b.dataset.dir))));
+    btns.forEach(b => b.addEventListener('click', () => { pause(); go(Number(b.dataset.dir)); resumeSoon(); }));
 
     dots.addEventListener('click', e => {
       const d = e.target.closest('.wcar__dot');
       if (!d) return;
-      const n = pageCount();
-      wanted = n > 1 ? (Number(d.dataset.page) / (n - 1)) * maxScroll() : 0;
+      pause();
+      const pos = positions();
+      const idx = Number(d.dataset.i) + (LOOP ? n : 0);   // the middle copy
+      wanted = Math.min(pos[idx] ?? 0, maxScroll());
       track.scrollTo({ left: wanted, behavior: 'smooth' });
+      resumeSoon();
     });
 
-    let settle;
+    let settle, lastScroll = 0;
     track.addEventListener('scroll', () => {
+      lastScroll = performance.now();
       sync();
       clearTimeout(settle);
-      settle = setTimeout(() => { wanted = null; }, 140);
+      settle = setTimeout(() => { wanted = null; recentre(); sync(); }, 160);
     }, { passive: true });
+
+    /* Independent idle check. Autoplay's own scrolling can keep resetting
+       the settle timer, which would starve the wrap and let the reel run
+       off the end of the last copy. */
+    setInterval(() => {
+      if (performance.now() - lastScroll > 320) { recentre(); sync(); }
+    }, 600);
 
     // let horizontal trackpad gestures through — Lenis owns vertical scroll
     track.addEventListener('wheel', e => {
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) e.stopPropagation();
     }, { passive: true });
 
-    addEventListener('resize', () => { renderDots(); sync(); });
-    renderDots();
-    sync();
+    /* Autoplay — keeps moving on its own, but yields the moment someone
+       wants to look, and stays off entirely for reduced-motion users. */
+    let timer = null, resumeT = null;
+    const tick = () => { if (!document.hidden) go(1); };
+    const play = () => { if (!reduced && !timer) timer = setInterval(tick, opt.interval || 3800); };
+    const pause = () => { clearInterval(timer); timer = null; clearTimeout(resumeT); };
+    const resumeSoon = () => { clearTimeout(resumeT); resumeT = setTimeout(play, 5000); };
+
+    ['mouseenter', 'focusin', 'touchstart', 'pointerdown'].forEach(ev =>
+      mount.addEventListener(ev, pause, { passive: true }));
+    ['mouseleave', 'focusout'].forEach(ev =>
+      mount.addEventListener(ev, resumeSoon, { passive: true }));
+    document.addEventListener('visibilitychange', () => (document.hidden ? pause() : resumeSoon()));
+
+    addEventListener('resize', () => { requestAnimationFrame(() => { recentre(); sync(); }); });
+
+    // start on the middle copy so there is runway behind us too
+    requestAnimationFrame(() => {
+      if (LOOP) track.scrollLeft = setWidth();
+      sync();
+      play();
+    });
   };
 
   /* ---- STRIKERS: mentor photo carousel (about.html) ---- */
