@@ -62,18 +62,6 @@ window.WEDA_CONTENT = {
   ],
 
   /* ============================================================
-     1b. HOMEPAGE — WHY WEDA  (index.html)
-     Short cards. Keep each "text" to one line.
-     ============================================================ */
-  whyWeda: [
-    { icon: "target", title: "Defence-Focused Preparation", text: "Focused preparation for India's leading defence and school-level entrance examinations." },
-    { icon: "star",   title: "Experienced Mentorship",      text: "Guidance from experienced educators and defence veterans." },
-    { icon: "book",   title: "Structured Learning",         text: "A planned learning pathway rather than random preparation." },
-    { icon: "clock",  title: "Regular Assessment",          text: "Tests, practice and performance evaluation through the year." },
-    { icon: "grid",   title: "Complete Ecosystem",          text: "Classes, practice, tests, books and digital resources in one place." },
-  ],
-
-  /* ============================================================
      1c. HOMEPAGE — OUR PREPARATION  (index.html)
      One card per exam. "note" is the small supporting line.
      "entry" is the little label in the corner of the card.

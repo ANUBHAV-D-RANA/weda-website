@@ -139,27 +139,6 @@ if (!reduced && typeof Lenis !== 'undefined') {
       </div>`).join('') + (f.note ? `<p class="fee-note" data-a>${esc(f.note)}</p>` : '');
   }
 
-  /* ---- HOMEPAGE: icon set for Why WEDA ---- */
-  const ICONS = {
-    target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/>',
-    star:   '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/>',
-    book:   '<path d="M12 6.5c-1.6-1.3-3.8-1.8-7.5-1.8v13c3.7 0 5.9.5 7.5 1.8 1.6-1.3 3.8-1.8 7.5-1.8v-13c-3.7 0-5.9.5-7.5 1.8z"/><path d="M12 6.5v13"/>',
-    clock:  '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
-    grid:   '<rect x="4" y="4" width="7" height="7" rx="1.2"/><rect x="13" y="4" width="7" height="7" rx="1.2"/><rect x="4" y="13" width="7" height="7" rx="1.2"/><rect x="13" y="13" width="7" height="7" rx="1.2"/>',
-  };
-  const svg = n => `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${ICONS[n] || ICONS.target}</svg>`;
-
-  /* ---- HOMEPAGE: Why WEDA cards ---- */
-  const whyGrid = document.getElementById('whyGrid');
-  if (whyGrid && C.whyWeda) {
-    whyGrid.innerHTML = C.whyWeda.map((w, i) => `
-      <div class="why-cell glass glass--hov" data-a data-d="${((i % 3) * 0.07).toFixed(2)}">
-        <div class="ic">${svg(w.icon)}</div>
-        <b>${esc(w.title)}</b>
-        <p>${esc(w.text)}</p>
-      </div>`).join('');
-  }
-
   /* ---- HOMEPAGE: Our Preparation cards ---- */
   const prepGrid = document.getElementById('prepGrid');
   if (prepGrid && C.preparation) {
