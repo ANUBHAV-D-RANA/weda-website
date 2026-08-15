@@ -1002,6 +1002,83 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
   .grnav__b{width:44px;height:44px;} /* comfortable touch target */
 }
 
+/* ============================================================
+   WCAR — shared photo carousel (Strikers / Gallery / Goalkeeper)
+   Every slide is a fixed-ratio frame, so heights never vary and
+   the photograph is the whole slide. No cards, no masonry.
+   ============================================================ */
+.wcar{display:flex;flex-direction:column;gap:clamp(14px,1.6vw,20px);}
+.wcar__viewport{position:relative;min-width:0;}
+.wcar__track{
+  display:flex;gap:clamp(10px,1.3vw,18px);
+  overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity;
+  padding:2px;margin:-2px;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.wcar__track::-webkit-scrollbar{display:none;}
+.wcar__track:focus-visible{outline:2px solid var(--red);outline-offset:4px;border-radius:16px;}
+
+.wcar__slide{
+  position:relative;flex:0 0 auto;scroll-snap-align:start;
+  border-radius:14px;overflow:hidden;
+  background:var(--glass-2);border:1px solid var(--glass-brd);
+  box-shadow:0 10px 30px -18px rgba(12,12,14,.4);
+}
+.wcar__slide img{
+  width:100%;height:100%;display:block;
+  object-fit:cover;object-position:center 22%;   /* protects heads */
+  transition:transform .7s var(--ease-o);
+}
+.wcar__slide:hover img{transform:scale(1.035);}
+
+/* fixed frames — this is what makes every photo the same size */
+.wcar--portrait .wcar__slide{aspect-ratio:4/5;flex-basis:calc((100% - 3 * clamp(10px,1.3vw,18px)) / 4);}
+.wcar--wide     .wcar__slide{aspect-ratio:3/2;flex-basis:calc((100% - 1 * clamp(10px,1.3vw,18px)) / 2);}
+.wcar--wide .wcar__slide img{object-position:center center;}
+
+.wcar__slide figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:34px 16px 13px;
+  font-family:var(--font-d);font-size:16px;letter-spacing:.02em;text-transform:uppercase;
+  color:var(--wht-pure);
+  background:linear-gradient(to top,rgba(8,8,10,.82),rgba(8,8,10,.45) 55%,transparent);
+}
+
+.wcar__bar{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.wcar__dots{display:flex;gap:7px;flex-wrap:wrap;}
+.wcar__dot{
+  width:8px;height:8px;padding:0;border-radius:50%;
+  background:var(--glass-brd-hi);border:none;
+  transition:background .25s var(--ease-o),width .25s var(--ease-o);
+}
+.wcar__dot.is-on{background:var(--red);width:22px;border-radius:999px;}
+.wcar__nav{display:flex;gap:9px;}
+.wcar__b{
+  width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+  font-size:22px;line-height:1;color:var(--wht);
+  background:var(--glass-2);border:1px solid var(--glass-brd);
+  transition:background .25s var(--ease-o),border-color .25s var(--ease-o),opacity .25s var(--ease-o);
+}
+.wcar__b:hover:not(:disabled){background:var(--red);border-color:var(--red);color:var(--wht-pure);}
+.wcar__b:disabled{opacity:.3;cursor:default;}
+
+@media(max-width:1060px){
+  .wcar--portrait .wcar__slide{flex-basis:calc((100% - 2 * clamp(10px,1.3vw,18px)) / 3);}
+}
+@media(max-width:780px){
+  .wcar--portrait .wcar__slide{flex-basis:calc((100% - 1 * clamp(10px,1.3vw,18px)) / 2);}
+  .wcar--wide .wcar__slide{flex-basis:100%;}
+}
+@media(max-width:520px){
+  .wcar--portrait .wcar__slide{flex-basis:78%;}   /* next slide peeks = swipe cue */
+  .wcar--wide .wcar__slide{flex-basis:92%;}
+  .wcar__b{width:44px;height:44px;}
+  .wcar__slide figcaption{font-size:14px;padding:28px 13px 11px;}
+}
+@media (prefers-reduced-motion:reduce){
+  .wcar__slide img,.wcar__slide:hover img{transition:none;transform:none;}
+}
+
 /* ---- GALLERY TABS ---- */
 .gtab-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:clamp(22px,2.6vw,34px);}
 .gtab{

@@ -74,29 +74,119 @@ if (!reduced && typeof Lenis !== 'undefined') {
       </div>`;
   }
 
-  /* ---- STRIKERS: mentor ID cards (about.html) ---- */
-  const strikers = document.getElementById('strikerGrid');
-  if (strikers && C.strikers) {
-    strikers.innerHTML = C.strikers.map((m, i) => `
-      <div class="idcard" data-a data-d="${((i % 3) * 0.07).toFixed(2)}">
-        <div class="idcard__top"><span class="logo-chip"><img src="assets/logo-mark.png" alt=""></span><span class="t">WEDA · SERVICE ID</span></div>
-        <div class="idcard__slot"></div>
-        <div class="idcard__photo"><img src="${esc(m.photo)}" alt="${esc(m.name)}" loading="lazy"></div>
-        <div class="idcard__body"><h3>${esc(m.name)}</h3><div class="idcard__spec">CLEARANCE — <b>${esc(m.subject).toUpperCase()}</b></div></div>
-        <div class="idcard__foot"><span class="idcard__barcode"></span><span class="idcard__no">${esc(m.id)}</span></div>
-      </div>`).join('');
-  }
+  /* ============================================================
+     CAROUSEL — one component, used by Strikers, Gallery and
+     Goalkeeper on about.html. Every slide sits in a fixed-ratio
+     frame so heights never vary; the photo is the whole slide.
+     Native overflow scrolling, so swipe and trackpad work; the
+     arrows and dots are conveniences on top.
+     ============================================================ */
+  const buildCarousel = (mount, slides, opt = {}) => {
+    if (!mount || !slides || !slides.length) return;
+    const variant = opt.variant || 'portrait';   // portrait | wide
 
-  /* ---- GOALKEEPER: support team (about.html) ---- */
-  const keeper = document.getElementById('keeperGrid');
-  if (keeper && C.goalkeeper) {
-    keeper.innerHTML = C.goalkeeper.map((g, i) => `
-      <div class="kcell glass glass--hov" data-a data-d="${(i * 0.08).toFixed(2)}">
-        <span class="kcell__role">${esc(g.role)}</span>
-        <b>${esc(g.name)}</b>
-        <p>${esc(g.desc)}</p>
-      </div>`).join('');
-  }
+    mount.innerHTML = `
+      <div class="wcar wcar--${variant}" data-a>
+        <div class="wcar__viewport">
+          <div class="wcar__track" tabindex="0" role="region" aria-label="${esc(opt.label || 'Photo carousel')}">
+            ${slides.map((s, i) => `
+              <figure class="wcar__slide">
+                <img src="${esc(s.image || s.photo)}" alt="${esc(s.name || s.caption || opt.label || 'WEDA')}"
+                     loading="${i < 3 ? 'eager' : 'lazy'}" decoding="async">
+                ${(s.name || s.caption) ? `<figcaption>${esc(s.name || s.caption)}</figcaption>` : ''}
+              </figure>`).join('')}
+          </div>
+        </div>
+        <div class="wcar__bar">
+          <div class="wcar__dots" role="tablist" aria-label="Slide position"></div>
+          <div class="wcar__nav">
+            <button type="button" class="wcar__b" data-dir="-1" aria-label="Previous">‹</button>
+            <button type="button" class="wcar__b" data-dir="1" aria-label="Next">›</button>
+          </div>
+        </div>
+      </div>`;
+
+    const track = mount.querySelector('.wcar__track');
+    const dots = mount.querySelector('.wcar__dots');
+    const btns = mount.querySelectorAll('.wcar__b');
+    let wanted = null;
+
+    const positions = () => {
+      const list = [...track.querySelectorAll('.wcar__slide')];
+      if (!list.length) return [];
+      const base = list[0].offsetLeft;
+      return list.map(s => s.offsetLeft - base);
+    };
+    const maxScroll = () => Math.max(0, track.scrollWidth - track.clientWidth);
+
+    // dots are pages, not slides — 16 photos should not mean 16 dots
+    const pageCount = () => Math.max(1, Math.ceil(maxScroll() / Math.max(1, track.clientWidth)) + 1);
+
+    const renderDots = () => {
+      const n = pageCount();
+      if (n <= 1) { dots.innerHTML = ''; return; }
+      dots.innerHTML = Array.from({ length: n }, (_, i) =>
+        `<button type="button" class="wcar__dot" role="tab" data-page="${i}" aria-label="Go to slide group ${i + 1}"></button>`).join('');
+    };
+
+    const sync = () => {
+      const max = maxScroll();
+      btns.forEach(b => {
+        const back = Number(b.dataset.dir) < 0;
+        b.disabled = back ? track.scrollLeft <= 2 : track.scrollLeft >= max - 2;
+      });
+      const n = pageCount();
+      const active = max <= 0 ? 0 : Math.round((track.scrollLeft / max) * (n - 1));
+      dots.querySelectorAll('.wcar__dot').forEach((d, i) => {
+        d.classList.toggle('is-on', i === active);
+        d.setAttribute('aria-selected', i === active);
+      });
+    };
+
+    const go = dir => {
+      const pos = positions();
+      const max = maxScroll();
+      const here = wanted ?? track.scrollLeft;
+      const target = dir > 0 ? pos.find(x => x > here + 8) : [...pos].reverse().find(x => x < here - 8);
+      wanted = Math.max(0, Math.min(target ?? (dir > 0 ? max : 0), max));
+      track.scrollTo({ left: wanted, behavior: 'smooth' });
+    };
+
+    btns.forEach(b => b.addEventListener('click', () => go(Number(b.dataset.dir))));
+
+    dots.addEventListener('click', e => {
+      const d = e.target.closest('.wcar__dot');
+      if (!d) return;
+      const n = pageCount();
+      wanted = n > 1 ? (Number(d.dataset.page) / (n - 1)) * maxScroll() : 0;
+      track.scrollTo({ left: wanted, behavior: 'smooth' });
+    });
+
+    let settle;
+    track.addEventListener('scroll', () => {
+      sync();
+      clearTimeout(settle);
+      settle = setTimeout(() => { wanted = null; }, 140);
+    }, { passive: true });
+
+    // let horizontal trackpad gestures through — Lenis owns vertical scroll
+    track.addEventListener('wheel', e => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) e.stopPropagation();
+    }, { passive: true });
+
+    addEventListener('resize', () => { renderDots(); sync(); });
+    renderDots();
+    sync();
+  };
+
+  /* ---- STRIKERS: mentor photo carousel (about.html) ---- */
+  buildCarousel(document.getElementById('strikerGrid'), C.strikers, { variant: 'portrait', label: 'Our mentors' });
+
+  /* ---- GOALKEEPER: support team photo carousel (about.html) ---- */
+  buildCarousel(document.getElementById('keeperGrid'), C.goalkeeper, { variant: 'portrait', label: 'Support team' });
+
+  /* ---- GALLERY: life at the academy (about.html) ---- */
+  buildCarousel(document.getElementById('reconGrid'), C.gallery, { variant: 'wide', label: 'Inside the academy' });
 
   /* ---- FEE STRUCTURE tables (fees.html) ---- */
   const feeBox = document.getElementById('feeTables');
@@ -417,8 +507,7 @@ if (!reduced && typeof Lenis !== 'undefined') {
       <span class="polaroid__cap"><span>${esc(p.caption)}</span><b>${prefix} ${String(i + 1).padStart(2, '0')}</b></span>
     </div>`;
 
-  const reconGrid = document.getElementById('reconGrid');
-  if (reconGrid && C.gallery) reconGrid.innerHTML = C.gallery.map((p, i) => polaroid(p, i, 'EX.')).join('');
+  /* about.html's gallery is rendered by buildCarousel above, not here */
 
   const awall = document.getElementById('awall');
   if (awall && C.achievers) awall.innerHTML = C.achievers.map((p, i) => polaroid(p, i, '★')).join('');

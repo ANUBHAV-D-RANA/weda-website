@@ -205,36 +205,36 @@ window.WEDA_CONTENT = {
      GOALKEEPER  = support team
      ============================================================ */
 
-  /* --- STRIKERS: mentors. Add/remove whole { ... }, blocks. --- */
+  /* --- STRIKERS: mentors, shown as a photo carousel.
+     Names come from the supplied photo filenames. No subject or
+     designation is listed because none was supplied — add a
+     role: "Mathematics" line to any block if you want one shown. --- */
   strikers: [
-    { name: "Neeraj Sir",     photo: "assets/mentor-neeraj.jpg",    subject: "G.K. · Mathematics",        id: "WE/01" },
-    { name: "Niharika Gupta", photo: "assets/mentor-niharika.jpg",  subject: "Mathematics",               id: "WE/02" },
-    { name: "Pratima Jadon",  photo: "assets/mentor-pratima.jpg",   subject: "English",                   id: "WE/03" },
-    { name: "Rajvinder Kaur", photo: "assets/mentor-rajvinder.jpg", subject: "Mathematics",               id: "WE/04" },
-    { name: "Sonil Mam",      photo: "assets/mentor-sonil.jpg",     subject: "General Knowledge",         id: "WE/05" },
-    { name: "Tanmay Gupta",   photo: "assets/mentor-tanmay.jpg",    subject: "Intelligence & Reasoning",  id: "WE/06" },
+    { name: "Neeraj Sir",      photo: "assets/striker-neeraj-sir.jpg" },
+    { name: "Bimla Ma'am",     photo: "assets/striker-bimla-maam.jpg" },
+    { name: "Kamal Ma'am",     photo: "assets/striker-kamal-maam.jpg" },
+    { name: "Varun Sir",       photo: "assets/striker-varun-sir.jpg" },
+    { name: "Mahrose Sir",     photo: "assets/striker-mahrose-sir.jpg" },
+    { name: "Pankaj Sir",      photo: "assets/striker-pankaj-sir.jpg" },
+    { name: "Parveen Jha Sir", photo: "assets/striker-parveen-jha-sir.jpg" },
+    { name: "Vikram Sir",      photo: "assets/striker-vikram-sir.jpg" },
+    /* filename read "ANIKT Sir" — check whether this should be "Ankit Sir" */
+    { name: "Anikt Sir",       photo: "assets/striker-anikt-sir.jpg" },
   ],
 
-  /* --- GOALKEEPER: support team.
-     >>> PLACEHOLDER <<< These are ROLES, not real named people.
-     Replace "name" with the actual person once you confirm who
-     handles each desk, or delete any block you do not need. --- */
+  /* --- GOALKEEPER: support team, shown as a photo carousel.
+     Names come from the supplied photo filenames. --- */
   goalkeeper: [
-    {
-      role: "Admissions & Counselling",
-      name: "[ Add name ]",
-      desc: "Guides parents through course selection, eligibility and the enrollment process.",
-    },
-    {
-      role: "Student Support",
-      name: "[ Add name ]",
-      desc: "Handles class schedules, doubt sessions, study material and day-to-day cadet queries.",
-    },
-    {
-      role: "Parent Coordination",
-      name: "[ Add name ]",
-      desc: "Keeps families updated on attendance, test performance and preparation progress.",
-    },
+    { name: "Anjali Ma'am",   photo: "assets/keeper-anjali-maam.jpg" },
+    { name: "Anshul Ma'am",   photo: "assets/keeper-anshul-maam.jpg" },
+    { name: "Jaanvi Ma'am",   photo: "assets/keeper-jaanvi-maam.jpg" },
+    { name: "Jagriti Ma'am",  photo: "assets/keeper-jagriti-maam.jpg" },
+    { name: "Jyoti Ma'am",    photo: "assets/keeper-jyoti-maam.jpg" },
+    { name: "Karan Sir",      photo: "assets/keeper-karan-sir.jpg" },
+    { name: "Raveena Ma'am",  photo: "assets/keeper-raveena-maam.jpg" },
+    { name: "Sumit Sir",      photo: "assets/keeper-sumit-sir.jpg" },
+    { name: "Harshita Ma'am", photo: "assets/keeper-harshita-maam.jpg" },
+    { name: "Tripti Ma'am",   photo: "assets/keeper-tripti-maam.jpg" },
   ],
 
   /* ============================================================
@@ -328,15 +328,26 @@ window.WEDA_CONTENT = {
     ],
   },
 
-  /* ------- OPERATIONS BOARD photos (about.html) -------
-     hold = "pin" (red pin) or "tape" (tape strip) */
+  /* ------- GALLERY carousel (about.html) -------
+     Life at the academy. All 3:2 so the frame never jumps.
+     caption is optional — leave "" for no label. */
   gallery: [
-    { image: "assets/gallery-3.jpg", caption: "FORMATION",      hold: "pin"  },
-    { image: "assets/gallery-1.jpg", caption: "THE UNIT",       hold: "tape" },
-    { image: "assets/gallery-4.jpg", caption: "DRILLS",         hold: "pin"  },
-    { image: "assets/gallery-5.jpg", caption: "FIELDCRAFT",     hold: "tape" },
-    { image: "assets/gallery-6.jpg", caption: "DISCIPLINE",     hold: "pin"  },
-    { image: "assets/gallery-7.jpg", caption: "ESPRIT DE CORPS",hold: "tape" },
+    { image: "assets/camp-img-9332.jpg", caption: "" },
+    { image: "assets/camp-untitled-design-67.jpg", caption: "" },
+    { image: "assets/camp-img-1252.jpg", caption: "" },
+    { image: "assets/camp-img-9672.jpg", caption: "" },
+    { image: "assets/camp-img-1262.jpg", caption: "" },
+    { image: "assets/camp-img-9576.jpg", caption: "" },
+    { image: "assets/camp-aasz6511.jpg", caption: "" },
+    { image: "assets/camp-img-9531.jpg", caption: "" },
+    { image: "assets/camp-img-6250.jpg", caption: "" },
+    { image: "assets/camp-img-1005.jpg", caption: "" },
+    { image: "assets/camp-img-6087.jpg", caption: "" },
+    { image: "assets/camp-img-0962.jpg", caption: "" },
+    { image: "assets/camp-img-6112.jpg", caption: "" },
+    { image: "assets/camp-img-6526.jpg", caption: "" },
+    { image: "assets/camp-whatsapp-image-2025-12-27-at-9-18-29-am.jpg", caption: "" },
+    { image: "assets/camp-whatsapp-image-2026-01-01-at-10-22-50-pm.jpg", caption: "" },
   ],
 
   /* ------- ACHIEVER WALL photos (results.html) ------- */
