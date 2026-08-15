@@ -263,8 +263,14 @@ if (!reduced && typeof Lenis !== 'undefined') {
           <div class="greviews__acts">
             <a href="${esc(G.profileUrl)}" class="btn btn--glass" target="_blank" rel="noopener">View all Google Reviews ⟶</a>
           </div>
+          ${listHtml ? `<div class="grnav">
+            <button type="button" class="grnav__b" data-dir="-1" aria-label="Previous reviews">‹</button>
+            <button type="button" class="grnav__b" data-dir="1" aria-label="Next reviews">›</button>
+          </div>` : ''}
         </div>
-        <div class="greviews__list">${listHtml}</div>
+        <div class="greviews__slider">
+          <div class="greviews__track" tabindex="0" role="region" aria-label="Google reviews">${listHtml}</div>
+        </div>
       </div>
       ${note ? `<p class="greviews__note">${note}</p>` : ''}`;
 
@@ -281,8 +287,85 @@ if (!reduced && typeof Lenis !== 'undefined') {
           </div>
           <span class="gcard__g" aria-hidden="true">G</span>
         </header>
-        <p>${esc(text).slice(0, 320)}${text && text.length > 320 ? '…' : ''}</p>
+        <div class="gcard__body">
+          <p class="gcard__text">${esc(text)}</p>
+          <button type="button" class="gcard__more" hidden>Read more</button>
+        </div>
       </article>`;
+
+    /* Slider arrows + "Read more". Called after every render because the
+       markup is rebuilt when the fetch resolves. */
+    const wireReviews = () => {
+      const track = grBox.querySelector('.greviews__track');
+
+      // "Read more" — only offered on cards whose text is actually clipped.
+      grBox.querySelectorAll('.gcard').forEach(cardEl => {
+        const p = cardEl.querySelector('.gcard__text');
+        const btn = cardEl.querySelector('.gcard__more');
+        if (!p || !btn) return;
+        // let layout settle before measuring the clamp
+        requestAnimationFrame(() => {
+          if (p.scrollHeight - p.clientHeight > 4) btn.hidden = false;
+        });
+        btn.addEventListener('click', () => {
+          const open = cardEl.classList.toggle('is-open');
+          btn.textContent = open ? 'Read less' : 'Read more';
+          if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+        });
+      });
+
+      if (!track) return;
+
+      /* Scroll to a card's exact offset rather than scrollBy(). With
+         scroll-snap: mandatory a relative scroll gets re-snapped back to
+         the card it started on, so paging would stall after one step. */
+      /* `wanted` is where we asked the track to end up. Paging from it
+         rather than from live scrollLeft means a second click landing
+         mid-animation advances another card instead of recomputing from
+         a half-finished position. Cleared whenever the user scrolls. */
+      let wanted = null;
+
+      const go = dir => {
+        const list = [...track.querySelectorAll('.gcard')];
+        if (!list.length) return;
+        const base = list[0].offsetLeft;              // track's own origin
+        const pos = list.map(c => c.offsetLeft - base);
+        const max = Math.max(0, track.scrollWidth - track.clientWidth);
+        const here = wanted ?? track.scrollLeft;
+        const target = dir > 0
+          ? pos.find(x => x > here + 8)
+          : [...pos].reverse().find(x => x < here - 8);
+        wanted = Math.max(0, Math.min(target ?? (dir > 0 ? max : 0), max));
+        track.scrollTo({ left: wanted, behavior: 'smooth' });
+      };
+
+      const btns = grBox.querySelectorAll('.grnav__b');
+      btns.forEach(b => b.addEventListener('click', () => go(Number(b.dataset.dir))));
+
+      // grey out an arrow when there is nowhere further to go
+      const sync = () => {
+        const max = track.scrollWidth - track.clientWidth - 2;
+        btns.forEach(b => {
+          const back = Number(b.dataset.dir) < 0;
+          b.disabled = back ? track.scrollLeft <= 2 : track.scrollLeft >= max;
+        });
+      };
+      // once the animation settles (or the user swipes), trust the real position
+      let settle;
+      track.addEventListener('scroll', () => {
+        sync();
+        clearTimeout(settle);
+        settle = setTimeout(() => { wanted = null; }, 140);
+      }, { passive: true });
+      addEventListener('resize', sync);
+      sync();
+
+      /* Lenis hijacks wheel events for the smooth page scroll, which stops
+         trackpad swiping inside the slider. Hand horizontal intent back. */
+      track.addEventListener('wheel', e => {
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) e.stopPropagation();
+      }, { passive: true });
+    };
 
     const summaryBlock = (rating, total) => `
       <div class="greviews__score">
@@ -300,7 +383,7 @@ if (!reduced && typeof Lenis !== 'undefined') {
         (G.reviews || []).map(r => card(r.name, r.stars, r.when, r.text, r.photo)).join(''),
         'Reviews from our Google Business Profile. Open the listing to read every review and leave your own.'
       );
-      revealNew(grBox); if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+      wireReviews(); revealNew(grBox); if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
     };
 
     // Neutral placeholder while the request is in flight.
@@ -319,7 +402,7 @@ if (!reduced && typeof Lenis !== 'undefined') {
             (d.reviews || []).map(rv => card(rv.author, rv.rating, rv.relative, rv.text, rv.photo)).join(''),
             'Live from our official Google Business Profile. Google returns up to five reviews at a time — open the listing to read them all.'
           );
-          revealNew(grBox); if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+          wireReviews(); revealNew(grBox); if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
         } else {
           renderFallback();
         }
