@@ -1036,7 +1036,9 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
    Portraits are square: it is the only ratio every supplied source can
    fill by cropping alone, so no canvas ever has to be invented. */
 .wcar--portrait .wcar__slide{aspect-ratio:1/1;flex-basis:calc((100% - 3 * clamp(10px,1.3vw,18px)) / 4);}
-.wcar--wide     .wcar__slide{aspect-ratio:3/2;flex-basis:calc((100% - 1 * clamp(10px,1.3vw,18px)) / 2);}
+/* 4:3 matches most of the camp photos exactly, so those lose no height at
+   all — 3:2 was slicing the top and bottom off, taking people's heads. */
+.wcar--wide     .wcar__slide{aspect-ratio:4/3;flex-basis:calc((100% - 1 * clamp(10px,1.3vw,18px)) / 2);}
 /* the files are already cropped to frame, so no object-position nudge */
 .wcar__slide img{object-position:center center;}
 
