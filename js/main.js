@@ -43,6 +43,14 @@ if (!reduced && typeof Lenis !== 'undefined') {
       </article>`).join('');
   }
 
+  /* A screenshot framed as a browser window, so it reads as "this is a
+     real site you can go to" rather than a stray image on the page. */
+  const shot = (src, label, alt) => `
+    <figure class="shot" data-a>
+      <div class="shot__bar"><i></i><i></i><i></i><span>${esc(label)}</span></div>
+      <img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async">
+    </figure>`;
+
   /* ---- DIGITAL COURSES block (courses.html) ---- */
   const digiBox = document.getElementById('digitalBox');
   if (digiBox && C.digital) {
@@ -52,11 +60,34 @@ if (!reduced && typeof Lenis !== 'undefined') {
         <div class="digi__body">
           <h3>${esc(d.title)}</h3>
           <p>${esc(d.desc)}</p>
+          <ul class="digi__list">
+            ${(d.items || []).map(it => `<li><b>${esc(it.name)}</b><span>${esc(it.note)}</span></li>`).join('')}
+          </ul>
           <a href="${esc(d.link)}" class="btn" target="_blank" rel="noopener">${esc(d.button)} ⟶</a>
         </div>
-        <ul class="digi__list">
-          ${(d.items || []).map(it => `<li><b>${esc(it.name)}</b><span>${esc(it.note)}</span></li>`).join('')}
-        </ul>
+        ${d.shot ? shot(d.shot, 'WEDA App — courses.store', 'The WEDA app course store') : ''}
+      </div>`;
+  }
+
+  /* ---- WEDA BOOKS block (courses.html) ---- */
+  const booksBox = document.getElementById('booksBox');
+  if (booksBox && C.books) {
+    const b = C.books;
+    booksBox.innerHTML = `
+      <div class="books" data-a>
+        ${b.shot ? shot(b.shot, esc(b.site || 'WEDA Books'), 'The WEDA Books store') : ''}
+        <div class="books__body">
+          <span class="books__tag">${esc(b.tagline)}</span>
+          <p>${esc(b.desc)}</p>
+          <ul class="books__list">
+            ${(b.items || []).map(it => `
+              <li${it.soon ? ' class="is-soon"' : ''}>
+                <b>${esc(it.name)}</b>
+                <span>${it.soon ? 'Coming soon' : esc(it.note || '')}</span>
+              </li>`).join('')}
+          </ul>
+          <a href="${esc(b.link)}" class="btn" target="_blank" rel="noopener">${esc(b.cta)} ⟶</a>
+        </div>
       </div>`;
   }
 

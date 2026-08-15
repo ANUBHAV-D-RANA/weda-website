@@ -22,7 +22,7 @@ window.WEDA_CONTENT = {
     {
       title: "School Entrance Exams",
       label: "CLASS 6 & CLASS 9 ENTRY",
-      image: "assets/course-1.jpg",
+      image: "assets/course-sainik.jpg",
       programs: ["Sainik School", "RMS", "UP Sainik School", "JNV"],
       desc: "One structured track for every school-level entrance: Mathematics, English, General Knowledge, Intelligence and interview readiness. Weekly mock tests, ranked leaderboards and no mercy on weak fundamentals.",
       tags: ["Online", "Offline", "Digital"],
@@ -32,7 +32,7 @@ window.WEDA_CONTENT = {
     {
       title: "RIMC",
       label: "RASHTRIYA INDIAN MILITARY COLLEGE",
-      image: "assets/course-2.jpg",
+      image: "assets/course-rimc.jpg",
       programs: ["Written Exam", "Viva Voce", "Medical Guidance"],
       desc: "Dedicated preparation for the Rashtriya Indian Military College entrance — Mathematics, English and General Knowledge, followed by Viva Voce interview drills. Fundamentals before speed, then full-length mocks under exam timing.",
       tags: ["Online", "Offline", "Digital"],
@@ -42,7 +42,7 @@ window.WEDA_CONTENT = {
     {
       title: "NDA",
       label: "NATIONAL DEFENCE ACADEMY",
-      image: "assets/course-3.jpg",
+      image: "assets/course-nda.jpg",
       programs: ["Mathematics", "General Ability Test", "Current Affairs"],
       desc: "Officer-grade preparation for the NDA written examination, built around the full syllabus with weekly testing and doubt-clearing from mentors who have taught on both sides of the selection board.",
       tags: ["Online", "Offline", "Hybrid"],
@@ -52,7 +52,7 @@ window.WEDA_CONTENT = {
     {
       title: "SSB",
       label: "SERVICES SELECTION BOARD",
-      image: "assets/course-4.jpg",
+      image: "assets/course-ssb.jpg",
       programs: ["Psychology Tests", "GTO Tasks", "Personal Interview"],
       desc: "The full SSB assault course — screening, psychology tests, GTO ground tasks and personal interview drills that break a candidate down and rebuild them as selection material.",
       tags: ["Online", "Offline", "Hybrid"],
@@ -179,12 +179,34 @@ window.WEDA_CONTENT = {
   digital: {
     title: "Digital Courses",
     desc: "Self-paced recorded ammunition — structured video lectures and digital workbooks you can start today. Train from anywhere, anytime, at your own command.",
+    shot: "assets/shot-app.jpg",
     link: "https://ewfqe.courses.store/",
     button: "Explore Digital Courses",
     items: [
       { name: "Sainik School", note: "Recorded lectures + workbooks" },
       { name: "RIMC",          note: "Recorded lectures + workbooks" },
       { name: "RMS",           note: "Recorded lectures + workbooks" },
+    ],
+  },
+
+  /* ============================================================
+     2b. WEDA BOOKS  (courses.html #books)
+     Categories are read off the WEDA Books storefront itself, so the
+     two titles it marks "coming soon" are shown that way here too.
+     ============================================================ */
+  books: {
+    tagline: "Books that prepare you to serve",
+    desc: "WEDA Books is the publishing arm of the academy — printed and digital preparation material written for the same syllabus our batches follow.",
+    shot: "assets/shot-books.jpg",
+    site: "wedabooks.com",
+    link: "https://wedabooks.com/",
+    cta: "Explore WEDA Books",
+    items: [
+      { name: "Sainik School & RMS — Class 6", note: "All-in-one practice sets and previous-year papers. Bilingual, English & Hindi." },
+      { name: "Sainik School & RMS — Class 9", note: "Complete content as per syllabus, mock tests and mini-practice sets." },
+      { name: "RIMC Entrance Examination",     note: "Previous-year papers 2018–2024 with complete bilingual solutions." },
+      { name: "NDA",                            soon: true },
+      { name: "SSB Interview",                  soon: true },
     ],
   },
 

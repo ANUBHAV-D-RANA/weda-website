@@ -715,9 +715,34 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 }
 .course-row__progs i{display:none;}
 
+/* the course artwork carries its own headline type, so the frame matches
+   the source ratio exactly and object-fit has nothing left to crop */
+.course-row__media{aspect-ratio:1596/986;}
+.course-row__media img{object-fit:cover;object-position:center;}
+
+/* ---- browser-style screenshot frame ---- */
+.shot{
+  border-radius:14px;overflow:hidden;background:var(--bg-2);
+  border:1px solid var(--glass-brd);
+  box-shadow:0 24px 60px -34px rgba(12,12,14,.55);
+  min-width:0;
+}
+.shot__bar{
+  display:flex;align-items:center;gap:6px;padding:10px 14px;
+  background:rgba(12,12,14,.05);border-bottom:1px solid var(--glass-brd);
+}
+.shot__bar i{width:9px;height:9px;border-radius:50%;background:var(--glass-brd-hi);}
+.shot__bar i:first-child{background:rgba(225,29,46,.55);}
+.shot__bar span{
+  margin-left:10px;font-family:var(--font-m);font-size:10.5px;letter-spacing:.1em;
+  text-transform:lowercase;color:var(--gry);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.shot img{width:100%;height:auto;display:block;}
+
 /* ---- DIGITAL COURSES ---- */
 .digi{
-  display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,3vw,48px);
+  display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(24px,3vw,48px);
   padding:clamp(26px,3vw,46px);align-items:center;
 }
 .digi h3{font-size:clamp(28px,3.4vw,44px);line-height:.98;color:var(--ink);margin-bottom:14px;}
@@ -727,9 +752,45 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
   display:flex;flex-direction:column;gap:3px;padding:14px 18px;border-radius:12px;
   background:var(--glass-2);border:1px solid var(--glass-brd);
 }
+.digi__list{margin-bottom:26px;}
 .digi__list b{font-family:var(--font-m);font-size:13px;letter-spacing:.08em;text-transform:uppercase;}
 .digi__list span{font-size:13px;color:var(--gry);}
+.digi p{margin-bottom:22px;}
 @media(max-width:880px){.digi{grid-template-columns:1fr;}}
+
+/* ---- WEDA BOOKS ---- */
+.books{
+  display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(26px,3.4vw,56px);align-items:center;
+}
+.books__body{min-width:0;}
+.books__tag{
+  display:block;font-family:var(--font-d);font-size:clamp(21px,2.4vw,31px);
+  line-height:1.05;text-transform:uppercase;color:var(--ink);margin-bottom:14px;
+}
+.books__body > p{color:var(--gry-lt);font-size:15px;line-height:1.75;margin-bottom:24px;}
+.books__list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:28px;}
+.books__list li{
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding:12px 16px;border-radius:11px;
+  background:var(--glass-2);border:1px solid var(--glass-brd);
+}
+.books__list b{
+  font-family:var(--font-m);font-size:12.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--wht);flex:1 1 auto;
+}
+.books__list span{font-size:12.5px;color:var(--gry);flex:1 1 auto;text-align:right;line-height:1.5;}
+.books__list li.is-soon{opacity:.6;}
+.books__list li.is-soon span{
+  font-family:var(--font-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);
+}
+@media(max-width:920px){
+  .books{grid-template-columns:1fr;}
+  .books .shot{order:-1;}
+}
+@media(max-width:560px){
+  .books__list li{flex-direction:column;gap:4px;}
+  .books__list span{text-align:left;}
+}
 
 /* ---- LOW-COST LEARNING ---- */
 .lowcost{
