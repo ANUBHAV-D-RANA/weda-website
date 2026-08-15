@@ -298,7 +298,9 @@ window.WEDA_CONTENT = {
   },
 
   /* ============================================================
-     6. GALLERY  (gallery.html) — exactly three categories.
+     6. GALLERY TABS — no longer used. The only gallery now lives in
+     the About Us page carousel (see "gallery" further down). Kept so
+     the three photo groupings are not lost if you want them back.
      ============================================================ */
   galleryTabs: {
     achievements: [

@@ -4,6 +4,8 @@
   "trailingSlash": false,
   "redirects": [
     { "source": "/mentors.html", "destination": "/about.html", "permanent": true },
-    { "source": "/mentors", "destination": "/about", "permanent": true }
+    { "source": "/mentors", "destination": "/about", "permanent": true },
+    { "source": "/gallery.html", "destination": "/about.html", "permanent": true },
+    { "source": "/gallery", "destination": "/about", "permanent": true }
   ]
 }

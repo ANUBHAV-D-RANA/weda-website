@@ -329,7 +329,9 @@ if (!reduced && typeof Lenis !== 'undefined') {
       <span class="polaroid__cap"><span>${esc(p.caption)}</span><b>${String(i + 1).padStart(2, '0')}</b></span>
     </div>`;
 
-  /* ---- GALLERY: three tabbed categories (gallery.html) ---- */
+  /* ---- GALLERY TABS: only runs if a #galleryTabs element exists.
+     The standalone gallery page was removed; About Us is the one
+     gallery now. Harmless no-op on every current page. ---- */
   const gtabs = document.getElementById('galleryTabs');
   if (gtabs && C.galleryTabs) {
     const cats = [
