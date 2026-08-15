@@ -239,45 +239,73 @@ if (!reduced && typeof Lenis !== 'undefined') {
   buildCarousel(document.getElementById('achieverGrid'), C.achieverBadges, { variant: 'badge', label: 'Our achievers' });
 
 
-  /* ---- FEE STRUCTURE tables (fees.html) ---- */
+  /* ---- FEE STRUCTURE (fees.html) ----
+     One duration at a time, chosen by the tabs. The sheet prices every
+     course three ways (1 year / 6 months / crash), and showing all three
+     alongside Online and Offline would be six money columns — unreadable
+     on a phone. Tabs keep the table to the shape of the supplied format:
+     S. No. | Batch | Online | Offline | Remark. */
   const feeBox = document.getElementById('feeTables');
-  if (feeBox && C.fees) {
+  if (feeBox && C.fees && C.fees.batches) {
     const f = C.fees;
-    feeBox.innerHTML = (f.published ? '' : `
-      <div class="fee-warn" data-a>
-        <b>Fee figures not published yet.</b>
-        <span>The amounts below are placeholders. Real fees will appear here once the official fee structure is loaded into <code>js/content.js</code>.</span>
-      </div>`) + (f.programs || []).map((p, i) => `
-      <div class="fee-card glass" data-a data-d="${(i * 0.06).toFixed(2)}">
-        <div class="fee-card__head">
-          <h3>${esc(p.program)}</h3>
-          ${p.sub ? `<span>${esc(p.sub)}</span>` : ''}
-        </div>
-        <div class="fee-scroll">
-          <table class="fee-table">
-            <thead>
-              <tr><th scope="col">Particular</th><th scope="col">First Year</th><th scope="col">Second Year</th><th scope="col">Third Year</th></tr>
-            </thead>
-            <tbody>
-              ${(p.rows || []).map(r => `
+    const durs = f.durations || [{ key: 'y1', label: 'Fee' }];
+    const cell = v => (v ? esc(v) : '<span class="fee-na">—</span>');
+
+    const table = key => `
+      <div class="fee-scroll">
+        <table class="fee-table fee-table--batches">
+          <thead>
+            <tr>
+              <th scope="col">S. No.</th>
+              <th scope="col">Batch</th>
+              <th scope="col">Online</th>
+              <th scope="col">Offline<small>excludes schooling &amp; hostel</small></th>
+              <th scope="col">Remark</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${f.batches.map((b, i) => `
               <tr>
-                <th scope="row" data-l="Particular">${esc(r.particular)}</th>
-                <td data-l="First Year">${esc(r.y1)}</td>
-                <td data-l="Second Year">${esc(r.y2)}</td>
-                <td data-l="Third Year">${esc(r.y3)}</td>
+                <td class="fee-sno" data-l="S. No.">${i + 1}</td>
+                <th scope="row" data-l="Batch">${esc(b.batch)}</th>
+                <td class="fee-amt" data-l="Online">${cell(b.online && b.online[key])}</td>
+                <td class="fee-amt" data-l="Offline">${cell(b.offline && b.offline[key])}</td>
+                <td class="fee-rem" data-l="Remark">${b.remark ? esc(b.remark) : '<span class="fee-na">—</span>'}</td>
               </tr>`).join('')}
-            </tbody>
-            ${p.total ? `<tfoot>
-              <tr>
-                <th scope="row" data-l="Total">Total</th>
-                <td data-l="First Year">${esc(p.total.y1)}</td>
-                <td data-l="Second Year">${esc(p.total.y2)}</td>
-                <td data-l="Third Year">${esc(p.total.y3)}</td>
-              </tr>
-            </tfoot>` : ''}
-          </table>
+          </tbody>
+        </table>
+      </div>`;
+
+    feeBox.innerHTML = `
+      <div class="fee-card glass" data-a>
+        <div class="fee-card__head">
+          <h3>${esc(f.title || 'Fee Structure')}</h3>
+          <span>Registration Fee: ${esc(f.registration || '')}</span>
         </div>
-      </div>`).join('') + (f.note ? `<p class="fee-note" data-a>${esc(f.note)}</p>` : '');
+        <div class="fee-tabs" role="tablist" aria-label="Course duration">
+          ${durs.map((d, i) => `<button type="button" class="fee-tab${i === 0 ? ' is-on' : ''}" role="tab"
+            aria-selected="${i === 0}" data-key="${esc(d.key)}">${esc(d.label)}</button>`).join('')}
+        </div>
+        ${durs.map((d, i) => `<div class="fee-pane${i === 0 ? ' is-on' : ''}" data-key="${esc(d.key)}"${i === 0 ? '' : ' hidden'}>${table(d.key)}</div>`).join('')}
+      </div>
+      ${f.gstNote ? `<p class="fee-gst" data-a>${esc(f.gstNote)}</p>` : ''}
+      ${(f.notes || []).length ? `<ul class="fee-notes" data-a>${f.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}`;
+
+    feeBox.addEventListener('click', e => {
+      const t = e.target.closest('.fee-tab');
+      if (!t) return;
+      feeBox.querySelectorAll('.fee-tab').forEach(b => {
+        const on = b === t;
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-selected', on);
+      });
+      feeBox.querySelectorAll('.fee-pane').forEach(p => {
+        const on = p.dataset.key === t.dataset.key;
+        p.classList.toggle('is-on', on);
+        p.hidden = !on;
+      });
+      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+    });
   }
 
   /* ---- HOMEPAGE: Our Preparation cards ---- */

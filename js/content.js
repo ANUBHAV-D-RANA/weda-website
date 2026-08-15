@@ -239,61 +239,78 @@ window.WEDA_CONTENT = {
   /* ============================================================
      5. FEE STRUCTURE  (fees.html)
 
-     >>>>>>>>>>>>>>>>  IMPORTANT  <<<<<<<<<<<<<<<<
-     EVERY NUMBER BELOW IS A PLACEHOLDER. Nothing here has been
-     taken from a real WEDA fee document — no fee PDF was supplied.
-     Replace each "—" with the real amount from the official fee
-     structure BEFORE showing this page to parents.
-     Set  published: true  once the real numbers are in; that
-     removes the warning banner on the page.
+     SOURCE: WEDA_Fees_2026_27_Updated.xlsx (sheet "WEDA Fees 2026-27").
+     Every amount below is transcribed from that sheet exactly as
+     written — nothing rounded, added or assumed.
+
+     Prices are per duration, so the page shows one duration at a
+     time via the tabs; "" means the sheet had no price in that cell.
      ============================================================ */
   fees: {
-    published: false,
-    note: "Fees shown are inclusive of GST where applicable. Registration fee is one-time and non-refundable.",
-    programs: [
+    published: true,
+    title: "WEDA Fees 2026–27",
+
+    durations: [
+      { key: "y1",    label: "1 Year" },
+      { key: "m6",    label: "6 Months" },
+      { key: "crash", label: "Crash Course" },
+    ],
+
+    /* online / offline hold the fee for each duration.
+       The sheet lists a single "Offline" mode, and its own remark on
+       the SS6 row records that it excludes schooling and hostel. */
+    batches: [
       {
-        program: "School Entrance Exams",
-        sub: "Sainik School | RMS | UP Sainik School | JNV",
-        rows: [
-          { particular: "Registration Fee", y1: "—", y2: "—", y3: "—" },
-          { particular: "Tuition Fee",      y1: "—", y2: "—", y3: "—" },
-          { particular: "Study Material",   y1: "—", y2: "—", y3: "—" },
-          { particular: "Hostel Fee",       y1: "—", y2: "—", y3: "—" },
-        ],
-        total: { y1: "—", y2: "—", y3: "—" },
+        batch: "Sainik School – Class 6",
+        code: "SS6",
+        online:  { y1: "₹49,500", m6: "₹36,500", crash: "₹20,500" },
+        offline: { y1: "₹52,500", m6: "₹39,500", crash: "₹23,500" },
+        remark: "Includes SS, RMS, UPSS and JNV Class 6 entrance",
       },
       {
-        program: "RIMC",
-        sub: "Rashtriya Indian Military College",
-        rows: [
-          { particular: "Registration Fee", y1: "—", y2: "—", y3: "—" },
-          { particular: "Tuition Fee",      y1: "—", y2: "—", y3: "—" },
-          { particular: "Study Material",   y1: "—", y2: "—", y3: "—" },
-          { particular: "Hostel Fee",       y1: "—", y2: "—", y3: "—" },
-        ],
-        total: { y1: "—", y2: "—", y3: "—" },
+        batch: "Sainik School – Class 9",
+        code: "SS9",
+        online:  { y1: "₹49,500", m6: "₹36,500", crash: "₹20,500" },
+        offline: { y1: "₹52,500", m6: "₹39,500", crash: "₹23,500" },
+        remark: "",
       },
       {
-        program: "NDA",
-        sub: "National Defence Academy",
-        rows: [
-          { particular: "Registration Fee", y1: "—", y2: "—", y3: "—" },
-          { particular: "Tuition Fee",      y1: "—", y2: "—", y3: "—" },
-          { particular: "Study Material",   y1: "—", y2: "—", y3: "—" },
-          { particular: "Hostel Fee",       y1: "—", y2: "—", y3: "—" },
-        ],
-        total: { y1: "—", y2: "—", y3: "—" },
+        batch: "RIMC",
+        code: "RIMC",
+        online:  { y1: "₹50,500", m6: "₹37,500", crash: "₹22,500" },
+        offline: { y1: "₹58,500", m6: "₹40,500", crash: "₹25,500" },
+        remark: "",
       },
       {
-        program: "SSB",
-        sub: "Services Selection Board",
-        rows: [
-          { particular: "Registration Fee", y1: "—", y2: "—", y3: "—" },
-          { particular: "Tuition Fee",      y1: "—", y2: "—", y3: "—" },
-          { particular: "Study Material",   y1: "—", y2: "—", y3: "—" },
-        ],
-        total: { y1: "—", y2: "—", y3: "—" },
+        batch: "NDA",
+        code: "NDA",
+        online:  { y1: "₹65,000", m6: "₹36,500", crash: "₹20,500" },
+        offline: { y1: "₹75,000", m6: "₹37,500", crash: "₹22,500" },
+        remark: "",
       },
+      {
+        batch: "RMS Interview Course",
+        code: "RMS-INT",
+        online:  { y1: "", m6: "", crash: "₹9,500" },
+        offline: { y1: "", m6: "", crash: "" },
+        remark: "Duration 10 days",
+      },
+      {
+        batch: "RIMC Interview Course",
+        code: "RIMC-INT",
+        online:  { y1: "", m6: "", crash: "₹12,500" },
+        offline: { y1: "", m6: "", crash: "" },
+        remark: "Duration 10 days",
+      },
+    ],
+
+    registration: "₹1,000/-",
+    /* wording requested for the page */
+    gstNote: "GST is inclusive in the above-mentioned fees.",
+    /* remaining remarks, straight from the sheet */
+    notes: [
+      "The fee is inclusive of applicable taxes.",
+      "For course duration other than mentioned above, please connect with the counselling team.",
     ],
   },
 

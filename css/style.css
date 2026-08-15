@@ -815,9 +815,53 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 .fee-table tfoot td{color:var(--red);}
 .fee-note{margin-top:20px;font-size:13.5px;color:var(--gry);line-height:1.7;}
 
+/* ---- duration tabs ---- */
+.fee-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:clamp(16px,2vw,24px);}
+.fee-tab{
+  font-family:var(--font-m);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:600;color:var(--gry-lt);background:var(--glass);
+  border:1px solid var(--glass-brd);border-radius:999px;padding:10px 18px;
+  transition:background .25s var(--ease-o),color .25s var(--ease-o),border-color .25s var(--ease-o);
+}
+.fee-tab:hover{border-color:var(--glass-brd-hi);color:var(--wht);}
+.fee-tab.is-on{background:var(--red);border-color:var(--red);color:var(--wht-pure);}
+.fee-pane{display:none;}
+.fee-pane.is-on{display:block;}
+
+/* ---- batch table ---- */
+.fee-table--batches{min-width:720px;}
+.fee-table--batches thead th{vertical-align:bottom;}
+.fee-table--batches thead th small{
+  display:block;margin-top:3px;font-size:10px;letter-spacing:.06em;
+  text-transform:none;color:var(--gry);font-weight:400;
+}
+.fee-table--batches th[scope="row"]{white-space:normal;min-width:180px;}
+.fee-sno{text-align:left!important;width:56px;color:var(--gry)!important;font-variant-numeric:tabular-nums;}
+.fee-amt{font-family:var(--font-d);font-size:19px;letter-spacing:.01em;color:var(--ink)!important;}
+.fee-rem{
+  text-align:left!important;white-space:normal!important;
+  font-size:12.5px;color:var(--gry)!important;max-width:260px;line-height:1.55;
+}
+.fee-na{color:var(--gry);opacity:.5;}
+
+/* ---- notes ---- */
+.fee-gst{
+  margin-top:clamp(18px,2.2vw,26px);padding:13px 18px;border-radius:11px;
+  background:rgba(225,29,46,.06);border:1px solid rgba(225,29,46,.22);
+  font-family:var(--font-m);font-size:12.5px;letter-spacing:.04em;color:var(--red-hot);
+}
+.fee-notes{margin-top:12px;padding-left:18px;list-style:disc;}
+.fee-notes li{font-size:13px;color:var(--gry);line-height:1.8;}
+
 /* fee tables become stacked cards on small screens */
 @media(max-width:640px){
-  .fee-table{min-width:0;}
+  .fee-table,.fee-table--batches{min-width:0;}
+  /* the batch table stacks: each row becomes a labelled card */
+  .fee-table--batches th[scope="row"]{min-width:0;font-size:14px;color:var(--ink);letter-spacing:0;text-transform:none;font-family:var(--font-d);}
+  .fee-table--batches th[scope="row"]::before{content:none;}
+  .fee-sno{display:none!important;}
+  .fee-amt{font-size:17px;}
+  .fee-rem{max-width:none;text-align:right!important;}
   .fee-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
   .fee-table tr{display:block;padding:12px 0;border-bottom:1px solid var(--glass-brd);}
   .fee-table tbody tr:last-child{border-bottom:none;}
