@@ -139,6 +139,68 @@ if (!reduced && typeof Lenis !== 'undefined') {
       </div>`).join('') + (f.note ? `<p class="fee-note" data-a>${esc(f.note)}</p>` : '');
   }
 
+  /* ---- HOMEPAGE: icon set for Why WEDA ---- */
+  const ICONS = {
+    target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/>',
+    star:   '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/>',
+    book:   '<path d="M12 6.5c-1.6-1.3-3.8-1.8-7.5-1.8v13c3.7 0 5.9.5 7.5 1.8 1.6-1.3 3.8-1.8 7.5-1.8v-13c-3.7 0-5.9.5-7.5 1.8z"/><path d="M12 6.5v13"/>',
+    clock:  '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+    grid:   '<rect x="4" y="4" width="7" height="7" rx="1.2"/><rect x="13" y="4" width="7" height="7" rx="1.2"/><rect x="4" y="13" width="7" height="7" rx="1.2"/><rect x="13" y="13" width="7" height="7" rx="1.2"/>',
+  };
+  const svg = n => `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${ICONS[n] || ICONS.target}</svg>`;
+
+  /* ---- HOMEPAGE: Why WEDA cards ---- */
+  const whyGrid = document.getElementById('whyGrid');
+  if (whyGrid && C.whyWeda) {
+    whyGrid.innerHTML = C.whyWeda.map((w, i) => `
+      <div class="why-cell glass glass--hov" data-a data-d="${((i % 3) * 0.07).toFixed(2)}">
+        <div class="ic">${svg(w.icon)}</div>
+        <b>${esc(w.title)}</b>
+        <p>${esc(w.text)}</p>
+      </div>`).join('');
+  }
+
+  /* ---- HOMEPAGE: Our Preparation cards ---- */
+  const prepGrid = document.getElementById('prepGrid');
+  if (prepGrid && C.preparation) {
+    prepGrid.innerHTML = C.preparation.map((p, i) => `
+      <a href="${esc(p.link)}" class="prep-card glass glass--hov" data-a data-d="${(i * 0.06).toFixed(2)}">
+        <div class="prep-card__img pframe">
+          <img src="${esc(p.image)}" alt="${esc(p.name)} preparation — WEDA" loading="lazy">
+        </div>
+        <div class="prep-card__body">
+          <h3>${esc(p.name)}</h3>
+          <p>${esc(p.note)}</p>
+          <span class="prep-card__go">View <span class="arr">⟶</span></span>
+        </div>
+      </a>`).join('');
+  }
+
+  /* ---- HOMEPAGE: WEDA Ecosystem tiles ---- */
+  const ecoGrid = document.getElementById('ecoGrid');
+  if (ecoGrid && C.ecosystem) {
+    ecoGrid.innerHTML = C.ecosystem.map((e, i) => {
+      const ext = /^https?:/.test(e.link);
+      return `
+      <a href="${esc(e.link)}" class="eco-tile glass glass--hov" data-a data-d="${(i * 0.06).toFixed(2)}"${ext ? ' target="_blank" rel="noopener"' : ''}>
+        <span class="eco-tile__tag">${esc(e.tag)}</span>
+        <h3>${esc(e.name)}</h3>
+        <p>${esc(e.text)}</p>
+        <span class="eco-tile__go">${esc(e.cta)} <span class="arr">⟶</span></span>
+      </a>`;
+    }).join('');
+  }
+
+  /* ---- HOMEPAGE: preparation journey strip ---- */
+  const jStrip = document.getElementById('journeyStrip');
+  if (jStrip && C.journey) {
+    jStrip.innerHTML = C.journey.map((s, i) => `
+      <div class="jstep" data-a data-d="${(i * 0.06).toFixed(2)}">
+        <span class="jstep__no">${String(i + 1).padStart(2, '0')}</span>
+        <b>${esc(s)}</b>
+      </div>`).join('<span class="jarrow" aria-hidden="true">⟶</span>');
+  }
+
   const polaroidTab = (p, i) => `
     <div class="polaroid${p.hold === 'tape' ? ' polaroid--tape' : ''}">
       ${p.hold === 'tape' ? '' : '<span class="polaroid__pin"></span>'}
@@ -164,6 +226,7 @@ if (!reduced && typeof Lenis !== 'undefined') {
           <div class="recon__grid">${C.galleryTabs[c.key].map(polaroidTab).join('')}</div>
         </div>`).join('')}`;
 
+    /* placeholder — gallery tab handler attaches below */
     gtabs.addEventListener('click', e => {
       const btn = e.target.closest('.gtab');
       if (!btn) return;
@@ -179,6 +242,90 @@ if (!reduced && typeof Lenis !== 'undefined') {
       });
       ScrollTrigger.refresh();
     });
+  }
+
+  /* ============================================================
+     GOOGLE REVIEWS (index.html) — live from the official listing.
+
+     Everything rendered here comes from /api/reviews, which reads
+     the Google Places API server-side. Nothing is hand-written.
+     If the API is not configured or fails, we show the summary
+     shell and a link to Google — we never fabricate a review.
+     ============================================================ */
+  const grBox = document.getElementById('googleReviews');
+  if (grBox && C.googleReviews) {
+    const G = C.googleReviews;
+    const stars = n => {
+      const full = Math.round(n || 0);
+      return `<span class="grstars" aria-label="${n} out of 5">${'★'.repeat(full)}${'☆'.repeat(Math.max(0, 5 - full))}</span>`;
+    };
+    const googleMark = `<span class="gmark" aria-hidden="true"><b>G</b>oogle</span>`;
+
+    const shell = (summaryHtml, listHtml, note) => `
+      <div class="greviews" data-a>
+        <div class="greviews__sum glass">
+          ${googleMark}
+          ${summaryHtml}
+          <div class="greviews__acts">
+            <a href="${esc(G.profileUrl)}" class="btn btn--glass" target="_blank" rel="noopener">View all Google Reviews ⟶</a>
+          </div>
+        </div>
+        <div class="greviews__list">${listHtml}</div>
+      </div>
+      ${note ? `<p class="greviews__note">${note}</p>` : ''}`;
+
+    // Neutral placeholder while the request is in flight.
+    grBox.innerHTML = shell(
+      `<div class="greviews__score"><b>—</b>${stars(0)}<small>Loading Google rating…</small></div>`,
+      '', ''
+    );
+
+    fetch('/api/reviews')
+      .then(r => r.json())
+      .then(d => {
+        const hasSummary = d && d.ok && typeof d.rating === 'number';
+        const summary = hasSummary
+          ? `<div class="greviews__score">
+               <b>${d.rating.toFixed(1)}</b>
+               ${stars(d.rating)}
+               <small>${d.total ? `${d.total.toLocaleString('en-IN')} Google reviews` : 'Google reviews'}</small>
+             </div>`
+          : `<div class="greviews__score">
+               <b>★</b>
+               <small>See our rating and reviews on Google</small>
+             </div>`;
+
+        const list = (d.reviews || []).length
+          ? d.reviews.map(rv => `
+              <article class="gcard glass">
+                <header>
+                  ${rv.photo
+                    ? `<img class="gcard__pic" src="${esc(rv.photo)}" alt="" loading="lazy" referrerpolicy="no-referrer">`
+                    : `<span class="gcard__pic gcard__pic--ph">${esc((rv.author || '?').charAt(0))}</span>`}
+                  <div>
+                    <b>${esc(rv.author || 'Google user')}</b>
+                    <span>${stars(rv.rating)}${rv.relative ? ` · ${esc(rv.relative)}` : ''}</span>
+                  </div>
+                  <span class="gcard__g" aria-hidden="true">G</span>
+                </header>
+                <p>${esc(rv.text).slice(0, 320)}${rv.text && rv.text.length > 320 ? '…' : ''}</p>
+              </article>`).join('')
+          : '';
+
+        const note = hasSummary
+          ? 'Rating and reviews are pulled from our official Google Business Profile. Google returns up to five reviews at a time — open the listing to read them all.'
+          : 'Live Google reviews are not being served on this deployment yet. Open our Google listing to read every review.';
+
+        grBox.innerHTML = shell(summary, list, note);
+        if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+      })
+      .catch(() => {
+        grBox.innerHTML = shell(
+          `<div class="greviews__score"><b>★</b><small>See our rating and reviews on Google</small></div>`,
+          '',
+          'Could not reach Google right now. Open our listing to read every review.'
+        );
+      });
   }
 
   const polaroid = (p, i, prefix) => `

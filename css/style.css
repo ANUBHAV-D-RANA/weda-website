@@ -845,6 +845,123 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
   [data-a]{opacity:1!important;transform:none!important;}
 }
 
+/* ============================================================
+   HOMEPAGE ENRICHMENT — why weda, preparation, ecosystem,
+   journey strip, google reviews
+   ============================================================ */
+
+/* ---- WHY WEDA ---- */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.6vw,20px);}
+.why-grid .why-cell:nth-child(4),
+.why-grid .why-cell:nth-child(5){grid-column:span 1;}
+.why-cell{padding:clamp(20px,2.2vw,28px);display:flex;flex-direction:column;gap:10px;}
+.why-cell .ic{
+  width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+  background:rgba(225,29,46,.08);border:1px solid rgba(225,29,46,.18);
+}
+.why-cell .ic svg{width:20px;height:20px;fill:none;stroke:var(--red);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.why-cell b{font-family:var(--font-d);font-size:19px;text-transform:uppercase;color:var(--ink);letter-spacing:.01em;line-height:1.1;}
+.why-cell p{color:var(--gry-lt);font-size:13.8px;line-height:1.65;}
+@media(max-width:900px){.why-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){.why-grid{grid-template-columns:1fr;}}
+
+/* ---- OUR PREPARATION ---- */
+.prep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,20px);}
+.prep-card{display:flex;flex-direction:column;overflow:hidden;padding:0;}
+.prep-card__img{aspect-ratio:4/3;border-radius:0;border:none;}
+.prep-card__img img{width:100%;height:100%;object-fit:cover;object-position:center;}
+.prep-card__body{padding:clamp(16px,1.8vw,22px);display:flex;flex-direction:column;gap:7px;flex:1;}
+.prep-card__body h3{font-size:23px;line-height:1;color:var(--ink);}
+.prep-card__body p{color:var(--gry-lt);font-size:13.4px;line-height:1.6;flex:1;}
+.prep-card__go{
+  font-family:var(--font-m);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--red);font-weight:600;display:inline-flex;align-items:center;gap:7px;
+}
+.prep-card:hover .prep-card__go .arr{transform:translateX(4px);}
+.prep-card__go .arr{transition:transform .3s var(--ease-o);}
+@media(max-width:980px){.prep-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.prep-grid{grid-template-columns:1fr;}.prep-card__img{aspect-ratio:16/9;}}
+
+/* ---- WEDA ECOSYSTEM ---- */
+.eco-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,20px);}
+.eco-tile{padding:clamp(20px,2.2vw,28px);display:flex;flex-direction:column;gap:9px;}
+.eco-tile__tag{
+  font-family:var(--font-m);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--red);font-weight:600;
+}
+.eco-tile h3{font-size:21px;line-height:1.05;color:var(--ink);}
+.eco-tile p{color:var(--gry-lt);font-size:13.4px;line-height:1.62;flex:1;}
+.eco-tile__go{
+  font-family:var(--font-m);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--wht);font-weight:600;display:inline-flex;align-items:center;gap:7px;margin-top:4px;
+}
+.eco-tile__go .arr{color:var(--red);transition:transform .3s var(--ease-o);}
+.eco-tile:hover .eco-tile__go .arr{transform:translateX(4px);}
+@media(max-width:980px){.eco-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.eco-grid{grid-template-columns:1fr;}}
+
+/* ---- JOURNEY STRIP ---- */
+.jstrip{
+  display:flex;align-items:center;justify-content:space-between;gap:clamp(8px,1.4vw,18px);
+  flex-wrap:wrap;padding:clamp(20px,2.4vw,30px) clamp(18px,2.4vw,34px);
+}
+.jstep{display:flex;align-items:center;gap:11px;}
+.jstep__no{
+  font-family:var(--font-m);font-size:11px;letter-spacing:.1em;color:var(--red);
+  border:1px solid rgba(225,29,46,.28);border-radius:999px;padding:5px 9px;
+}
+.jstep b{font-family:var(--font-d);font-size:clamp(16px,1.9vw,23px);text-transform:uppercase;color:var(--ink);letter-spacing:.01em;}
+.jarrow{color:var(--glass-brd-hi);font-size:15px;}
+@media(max-width:760px){
+  .jstrip{justify-content:flex-start;gap:10px 14px;}
+  .jarrow{display:none;}
+  .jstep{flex:1 1 40%;}
+}
+
+/* ---- GOOGLE REVIEWS ---- */
+.greviews{display:grid;grid-template-columns:.85fr 2.15fr;gap:clamp(14px,1.8vw,22px);align-items:start;}
+.greviews__sum{
+  padding:clamp(22px,2.6vw,34px);display:flex;flex-direction:column;gap:14px;
+  position:sticky;top:96px;
+}
+.gmark{
+  font-family:var(--font-b);font-weight:700;font-size:15px;letter-spacing:-.01em;color:var(--gry-lt);
+}
+.gmark b{color:#4285f4;font-size:17px;}
+.greviews__score{display:flex;flex-direction:column;gap:5px;}
+.greviews__score b{font-family:var(--font-d);font-size:clamp(38px,4.6vw,60px);line-height:.86;color:var(--ink);}
+.greviews__score small{font-family:var(--font-m);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gry);}
+.grstars{color:#fbbc04;font-size:17px;letter-spacing:2px;}
+.greviews__acts{display:flex;flex-wrap:wrap;gap:9px;margin-top:2px;}
+.greviews__acts .btn{font-size:11.5px;padding:11px 16px;}
+
+.greviews__list{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.5vw,18px);}
+.gcard{padding:clamp(18px,2vw,24px);display:flex;flex-direction:column;gap:11px;}
+.gcard header{display:flex;align-items:center;gap:11px;}
+.gcard__pic{width:38px;height:38px;border-radius:50%;object-fit:cover;flex:0 0 auto;}
+.gcard__pic--ph{
+  display:grid;place-items:center;background:var(--red);color:var(--wht-pure);
+  font-family:var(--font-d);font-size:17px;
+}
+.gcard header div{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;}
+.gcard header b{font-size:14px;font-weight:700;color:var(--wht);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gcard header span{font-size:11.5px;color:var(--gry);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.gcard header .grstars{font-size:13px;letter-spacing:1px;}
+.gcard__g{
+  font-family:var(--font-b);font-weight:700;font-size:16px;color:#4285f4;flex:0 0 auto;align-self:flex-start;
+}
+.gcard p{color:var(--gry-lt);font-size:13.6px;line-height:1.68;}
+.greviews__note{
+  margin-top:16px;font-family:var(--font-m);font-size:11.5px;line-height:1.7;
+  color:var(--gry);max-width:80ch;
+}
+@media(max-width:980px){
+  .greviews{grid-template-columns:1fr;}
+  .greviews__sum{position:static;}
+  .greviews__list{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:640px){.greviews__list{grid-template-columns:1fr;}}
+
 /* ---- GALLERY TABS ---- */
 .gtab-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:clamp(22px,2.6vw,34px);}
 .gtab{

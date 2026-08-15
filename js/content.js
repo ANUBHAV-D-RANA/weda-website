@@ -62,6 +62,84 @@ window.WEDA_CONTENT = {
   ],
 
   /* ============================================================
+     1b. HOMEPAGE — WHY WEDA  (index.html)
+     Short cards. Keep each "text" to one line.
+     ============================================================ */
+  whyWeda: [
+    { icon: "target", title: "Defence-Focused Preparation", text: "Focused preparation for India's leading defence and school-level entrance examinations." },
+    { icon: "star",   title: "Experienced Mentorship",      text: "Guidance from experienced educators and defence veterans." },
+    { icon: "book",   title: "Structured Learning",         text: "A planned learning pathway rather than random preparation." },
+    { icon: "clock",  title: "Regular Assessment",          text: "Tests, practice and performance evaluation through the year." },
+    { icon: "grid",   title: "Complete Ecosystem",          text: "Classes, practice, tests, books and digital resources in one place." },
+  ],
+
+  /* ============================================================
+     1c. HOMEPAGE — OUR PREPARATION  (index.html)
+     One card per exam. "note" is the small supporting line.
+     ============================================================ */
+  preparation: [
+    { name: "Sainik School", note: "Class 6 & Class 9 entry preparation.", image: "assets/course-1.jpg", link: "courses.html#course-1" },
+    { name: "RMS",           note: "Rashtriya Military School entrance.",  image: "assets/course-4.jpg", link: "courses.html#course-1" },
+    { name: "RIMC",          note: "Written exam and Viva Voce readiness.", image: "assets/course-2.jpg", link: "courses.html#course-2" },
+    { name: "NDA",           note: "Written exam plus SSB preparation.",   image: "assets/course-3.jpg", link: "courses.html#course-3" },
+  ],
+
+  /* ============================================================
+     1d. HOMEPAGE — WEDA ECOSYSTEM  (index.html)
+     Four compact tiles. Change "link" only to a real URL.
+     ============================================================ */
+  ecosystem: [
+    {
+      name: "WEDA App",
+      tag: "Digital Learning",
+      text: "Video courses, mock tests, practice sets and study resources on your phone.",
+      cta: "Explore WEDA App",
+      link: "https://ewfqe.courses.store/",
+    },
+    {
+      name: "WEDA Books",
+      tag: "Study Material",
+      text: "Preparation books and practice resources for RIMC, Sainik School and RMS.",
+      cta: "Explore WEDA Books",
+      link: "https://wedabooks.com/",
+    },
+    {
+      name: "WEDA Defence Plus",
+      tag: "Video Platform",
+      text: "The extended video guidance channel for defence aspirants.",
+      cta: "Watch on YouTube",
+      link: "https://www.youtube.com/@thewinningedgedefenceplus",
+    },
+    {
+      /* >>> NOTE: no public WEDA Gurukool URL was found in the project or on
+         the WEDA Linktree. This tile links to the contact page until you
+         supply the real link — replace "link" below when you have it. <<< */
+      name: "WEDA Gurukool",
+      tag: "Guidance",
+      text: "Career guidance and counselling sessions for students and parents.",
+      cta: "Enquire",
+      link: "contact.html",
+    },
+  ],
+
+  /* ============================================================
+     1e. HOMEPAGE — PREPARATION JOURNEY strip  (index.html)
+     ============================================================ */
+  journey: ["Learn", "Practice", "Test", "Analyse", "Improve"],
+
+  /* ============================================================
+     1f. GOOGLE REVIEWS  (index.html)
+     Reviews are pulled live from the official Google listing by
+     /api/reviews — nothing is written here by hand on purpose.
+     profileUrl = the public listing people can click through to.
+     ============================================================ */
+  googleReviews: {
+    profileUrl: "https://share.google/UaB1ukRY7ot2y6hwH",
+    writeReviewUrl: "https://search.google.com/local/writereview?placeid=",
+    listingName: "The Winning Edge - RIMC, RMS, Sainik School Coaching in Dehradun",
+  },
+
+  /* ============================================================
      2. DIGITAL COURSES  (courses.html #digital)
      Self-paced recorded courses. Change "link" to point
      somewhere else if the store URL ever changes.
