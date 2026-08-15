@@ -164,11 +164,12 @@ if (!reduced && typeof Lenis !== 'undefined') {
   const prepGrid = document.getElementById('prepGrid');
   if (prepGrid && C.preparation) {
     prepGrid.innerHTML = C.preparation.map((p, i) => `
-      <a href="${esc(p.link)}" class="prep-card glass glass--hov" data-a data-d="${(i * 0.06).toFixed(2)}">
-        <div class="prep-card__img pframe">
+      <a href="${esc(p.link)}" class="prep-card glass glass--hov${p.image ? '' : ' prep-card--txt'}" data-a data-d="${(i * 0.06).toFixed(2)}">
+        ${p.image ? `<div class="prep-card__img pframe">
           <img src="${esc(p.image)}" alt="${esc(p.name)} preparation — WEDA" loading="lazy">
-        </div>
+        </div>` : ''}
         <div class="prep-card__body">
+          ${p.entry ? `<span class="prep-card__entry">${esc(p.entry)}</span>` : ''}
           <h3>${esc(p.name)}</h3>
           <p>${esc(p.note)}</p>
           <span class="prep-card__go">View <span class="arr">⟶</span></span>

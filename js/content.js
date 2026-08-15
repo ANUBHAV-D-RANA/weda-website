@@ -76,12 +76,20 @@ window.WEDA_CONTENT = {
   /* ============================================================
      1c. HOMEPAGE — OUR PREPARATION  (index.html)
      One card per exam. "note" is the small supporting line.
+     "entry" is the little label in the corner of the card.
+
+     NOTE: these cards are deliberately text-only. The old
+     assets/course-*.jpg files are advertising creatives with text
+     baked into them ("BEST RIMC COACHING…"), so they cropped badly
+     and did not match their card. To use photographs here, drop
+     clean per-exam photos into assets/ and add an
+     image: "assets/your-photo.jpg" line to any block below.
      ============================================================ */
   preparation: [
-    { name: "Sainik School", note: "Class 6 & Class 9 entry preparation.", image: "assets/course-1.jpg", link: "courses.html#course-1" },
-    { name: "RMS",           note: "Rashtriya Military School entrance.",  image: "assets/course-4.jpg", link: "courses.html#course-1" },
-    { name: "RIMC",          note: "Written exam and Viva Voce readiness.", image: "assets/course-2.jpg", link: "courses.html#course-2" },
-    { name: "NDA",           note: "Written exam plus SSB preparation.",   image: "assets/course-3.jpg", link: "courses.html#course-3" },
+    { name: "Sainik School", entry: "Class 6 & 9", note: "AISSEE entrance preparation for both entry points.", link: "courses.html#course-1" },
+    { name: "RMS",           entry: "School Entry", note: "Rashtriya Military School entrance preparation.",   link: "courses.html#course-1" },
+    { name: "RIMC",          entry: "Class 8 Entry", note: "Written exam, Viva Voce and interview readiness.",  link: "courses.html#course-2" },
+    { name: "NDA",           entry: "Officer Entry", note: "Written examination plus full SSB preparation.",    link: "courses.html#course-3" },
   ],
 
   /* ============================================================
@@ -110,16 +118,9 @@ window.WEDA_CONTENT = {
       cta: "Watch on YouTube",
       link: "https://www.youtube.com/@thewinningedgedefenceplus",
     },
-    {
-      /* >>> NOTE: no public WEDA Gurukool URL was found in the project or on
-         the WEDA Linktree. This tile links to the contact page until you
-         supply the real link — replace "link" below when you have it. <<< */
-      name: "WEDA Gurukool",
-      tag: "Guidance",
-      text: "Career guidance and counselling sessions for students and parents.",
-      cta: "Enquire",
-      link: "contact.html",
-    },
+    /* WEDA Gurukool is intentionally not listed — there is no public link
+       for it yet. To add it back, copy one of the blocks above, change the
+       name/tag/text and put the real URL in "link". */
   ],
 
   /* ============================================================

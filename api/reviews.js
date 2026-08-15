@@ -8,19 +8,21 @@
    function's environment. The browser only ever calls /api/reviews.
 
    ------------------------------------------------------------
-   SETUP — two environment variables, both set in Vercel:
+   SETUP — you only need ONE environment variable:
 
      GOOGLE_MAPS_API_KEY   Google Cloud key with "Places API (New)"
                            enabled. Restrict it to that API.
-     GOOGLE_PLACE_ID       The Place ID of the official listing:
-                           "The Winning Edge - RIMC, RMS, Sainik
-                            School Coaching in Dehradun", Dehradun.
-                           Find it with Google's Place ID Finder:
-                           https://developers.google.com/maps/documentation/places/web-service/place-id
-                           It looks like ChIJ....  Do not guess it.
 
-   Set them with:
+   Set it with (it prompts for the value - paste it into the prompt,
+   it is stored encrypted by Vercel and never enters this repo):
+
      vercel env add GOOGLE_MAPS_API_KEY production
+
+   OPTIONAL — GOOGLE_PLACE_ID
+   If not set, this function resolves the listing itself by searching
+   for PLACE_QUERY below and caching the result. Set GOOGLE_PLACE_ID
+   explicitly (a ChIJ... string from Google's Place ID Finder) if you
+   ever want to pin it and skip the lookup:
      vercel env add GOOGLE_PLACE_ID production
 
    ------------------------------------------------------------
@@ -34,9 +36,39 @@
 
 const CACHE_SECONDS = 21600; // 6 hours — well inside Google's usage terms
 
+/* The official listing, exactly as Google names it. Resolved from the
+   share link the academy published: share.google/UaB1ukRY7ot2y6hwH
+   -> Knowledge Graph id /g/11r3lk68qj */
+const PLACE_QUERY = 'The Winning Edge - RIMC, RMS, Sainik School Coaching in Dehradun, Dehradun, Uttarakhand';
+
+/* Warm across invocations on the same container - avoids re-resolving. */
+let cachedPlaceId = null;
+
+async function resolvePlaceId(key) {
+  if (process.env.GOOGLE_PLACE_ID) return process.env.GOOGLE_PLACE_ID;
+  if (cachedPlaceId) return cachedPlaceId;
+
+  const r = await fetch('https://places.googleapis.com/v1/places:searchText', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': key,
+      'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress',
+    },
+    body: JSON.stringify({ textQuery: PLACE_QUERY, maxResultCount: 1, languageCode: 'en' }),
+  });
+  if (!r.ok) throw new Error(`Place lookup failed (${r.status})`);
+
+  const d = await r.json();
+  const hit = (d.places || [])[0];
+  if (!hit?.id) throw new Error('Could not find the WEDA listing on Google.');
+
+  cachedPlaceId = hit.id;
+  return cachedPlaceId;
+}
+
 export default async function handler(req, res) {
   const key = process.env.GOOGLE_MAPS_API_KEY;
-  const placeId = process.env.GOOGLE_PLACE_ID;
 
   // Cache at the CDN edge so we are not hitting Google on every pageview.
   res.setHeader(
@@ -44,17 +76,18 @@ export default async function handler(req, res) {
     `public, s-maxage=${CACHE_SECONDS}, stale-while-revalidate=${CACHE_SECONDS * 4}`
   );
 
-  if (!key || !placeId) {
+  if (!key) {
     // Not configured yet. Say so honestly — the front end then shows the
     // "rating unavailable" state and links to Google. It never invents data.
     return res.status(200).json({
       configured: false,
-      reason: 'GOOGLE_MAPS_API_KEY and/or GOOGLE_PLACE_ID are not set on this deployment.',
+      reason: 'GOOGLE_MAPS_API_KEY is not set on this deployment.',
       reviews: [],
     });
   }
 
   try {
+    const placeId = await resolvePlaceId(key);
     const r = await fetch(
       `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?languageCode=en`,
       {
