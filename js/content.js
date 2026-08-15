@@ -128,8 +128,9 @@ window.WEDA_CONTENT = {
 
     /* Headline numbers shown next to the stars.
        Update these whenever the real figures on the listing change. */
-    rating: 4.6,
-    total: 350,
+    /* current figures on the Google listing (checked via the map embed) */
+    rating: 4.7,
+    total: 455,
 
     /* ---------------------------------------------------------------
        REVIEWS SHOWN ON THE HOMEPAGE

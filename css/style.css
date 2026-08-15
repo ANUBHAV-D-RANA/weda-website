@@ -1346,6 +1346,25 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
   .post h3{padding-left:13px;}
 }
 
+/* ---- CONTACT: social row + Google map ---- */
+.c-social{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px;}
+.c-social a{
+  display:inline-flex;align-items:baseline;gap:7px;padding:9px 15px;border-radius:999px;
+  background:var(--glass-2);border:1px solid var(--glass-brd);
+  font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gry-lt);transition:border-color .25s var(--ease-o),color .25s var(--ease-o);
+}
+.c-social a b{color:var(--red);letter-spacing:.06em;}
+.c-social a:hover{border-color:var(--red);color:var(--wht);}
+
+.mapwrap{
+  position:relative;overflow:hidden;border-radius:16px;padding:0;
+  aspect-ratio:21/9;
+}
+.mapwrap iframe{width:100%;height:100%;border:0;display:block;filter:grayscale(.25);}
+.mapcta{display:flex;flex-wrap:wrap;gap:11px;margin-top:clamp(16px,2vw,24px);}
+@media(max-width:760px){.mapwrap{aspect-ratio:4/3;}}
+
 /* ---- GALLERY TABS ---- */
 .gtab-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:clamp(22px,2.6vw,34px);}
 .gtab{
