@@ -218,8 +218,7 @@ window.WEDA_CONTENT = {
     { name: "Pankaj Sir",      photo: "assets/striker-pankaj-sir.jpg" },
     { name: "Parveen Jha Sir", photo: "assets/striker-parveen-jha-sir.jpg" },
     { name: "Vikram Sir",      photo: "assets/striker-vikram-sir.jpg" },
-    /* filename read "ANIKT Sir" — check whether this should be "Ankit Sir" */
-    { name: "Anikt Sir",       photo: "assets/striker-anikt-sir.jpg" },
+    { name: "Ankit Sir",       photo: "assets/striker-ankit-sir.jpg" },
   ],
 
   /* --- GOALKEEPER: support team, shown as a photo carousel.
