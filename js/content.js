@@ -188,6 +188,26 @@ window.WEDA_CONTENT = {
   },
 
   /* ============================================================
+     1g. BLOG INDEX  (blog.html)
+
+     Every article lives on its own page. To add one:
+       1. copy blog-sainik-school-myths.html to blog-<your-slug>.html
+       2. replace the <article class="post"> contents and the <h1>
+       3. copy a { ... }, block below and point "link" at the new file
+     The first entry in the list is shown as the featured post.
+     ============================================================ */
+  posts: [
+    {
+      title: "Fifteen Things Parents Believe About Sainik School Admissions That Simply Are Not True",
+      link: "blog-sainik-school-myths.html",
+      category: "Sainik School",
+      meta: "Parent Knowledge Series · 12 min read",
+      author: "Col. Amardeep Sir, SM (Retd.)",
+      excerpt: "A defence quota that is smaller than everyone says. Girls who can apply but do not. An interview that does not exist. Fifteen beliefs families act on every admission season, and what is actually the case.",
+    },
+  ],
+
+  /* ============================================================
      2b. WEDA BOOKS  (courses.html #books)
      Categories are read off the WEDA Books storefront itself, so the
      two titles it marks "coming soon" are shown that way here too.

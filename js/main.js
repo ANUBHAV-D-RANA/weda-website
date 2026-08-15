@@ -69,6 +69,33 @@ if (!reduced && typeof Lenis !== 'undefined') {
       </div>`;
   }
 
+  /* ---- BLOG INDEX (blog.html) ----
+     First post is featured; the rest fall into a grid beneath it. */
+  const blogBox = document.getElementById('blogList');
+  if (blogBox && C.posts && C.posts.length) {
+    const [lead, ...rest] = C.posts;
+    blogBox.innerHTML = `
+      <a href="${esc(lead.link)}" class="pcard pcard--lead glass glass--hov" data-a>
+        <span class="pcard__tag">★ Featured · ${esc(lead.category)}</span>
+        <h3>${esc(lead.title)}</h3>
+        <p>${esc(lead.excerpt)}</p>
+        <div class="pcard__foot">
+          <span class="pcard__meta">${esc(lead.author)} · ${esc(lead.meta)}</span>
+          <span class="pcard__go">Read the brief <span class="arr">⟶</span></span>
+        </div>
+      </a>
+      ${rest.length ? `<div class="pgrid">${rest.map((p, i) => `
+        <a href="${esc(p.link)}" class="pcard glass glass--hov" data-a data-d="${((i + 1) * 0.06).toFixed(2)}">
+          <span class="pcard__tag">${esc(p.category)}</span>
+          <h3>${esc(p.title)}</h3>
+          <p>${esc(p.excerpt)}</p>
+          <div class="pcard__foot">
+            <span class="pcard__meta">${esc(p.meta)}</span>
+            <span class="pcard__go">Read <span class="arr">⟶</span></span>
+          </div>
+        </a>`).join('')}</div>` : ''}`;
+  }
+
   /* ---- WEDA BOOKS block (courses.html) ---- */
   const booksBox = document.getElementById('booksBox');
   if (booksBox && C.books) {
