@@ -829,20 +829,72 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 .fee-pane.is-on{display:block;}
 
 /* ---- batch table ---- */
-.fee-table--batches{min-width:720px;}
-.fee-table--batches thead th{vertical-align:bottom;}
+.fee-table--batches{min-width:780px;border-collapse:separate;border-spacing:0;}
+.fee-table--batches thead th{
+  vertical-align:bottom;padding:0 16px 14px;
+  border-bottom:1.5px solid var(--glass-brd-hi);
+}
+/* headers must follow their column, not the table-wide right-align */
+.fee-table--batches thead .c-sno,
+.fee-table--batches thead .c-batch,
+.fee-table--batches thead .c-rem{text-align:left;}
+.fee-table--batches thead .c-fee{text-align:right;}
 .fee-table--batches thead th small{
-  display:block;margin-top:3px;font-size:10px;letter-spacing:.06em;
-  text-transform:none;color:var(--gry);font-weight:400;
+  display:block;margin:4px 0 0 auto;max-width:145px;
+  font-size:9.5px;line-height:1.35;letter-spacing:.03em;
+  text-transform:none;color:var(--gry);font-weight:400;white-space:normal;
 }
-.fee-table--batches th[scope="row"]{white-space:normal;min-width:180px;}
-.fee-sno{text-align:left!important;width:56px;color:var(--gry)!important;font-variant-numeric:tabular-nums;}
-.fee-amt{font-family:var(--font-d);font-size:19px;letter-spacing:.01em;color:var(--ink)!important;}
-.fee-rem{
+.fee-table--batches th,.fee-table--batches td{border-bottom:none;padding:0;}
+
+/* each row is a band, not a bare line */
+.fee-table--batches tbody tr > *{
+  padding:18px 16px;background:transparent;
+  border-top:1px solid var(--glass-brd);
+  transition:background .22s var(--ease-o);
+  vertical-align:middle;
+}
+.fee-table--batches tbody tr:nth-child(even) > *{background:rgba(12,12,14,.022);}
+.fee-table--batches tbody tr:hover > *{background:rgba(225,29,46,.05);}
+.fee-table--batches tbody tr > *:first-child{border-radius:11px 0 0 11px;}
+.fee-table--batches tbody tr > *:last-child{border-radius:0 11px 11px 0;}
+
+.c-sno{width:60px;text-align:left!important;}
+.fee-sno{
+  display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;
+  background:var(--ink);color:var(--wht-pure);
+  font-family:var(--font-m);font-size:12px;font-weight:600;
+}
+.fee-table--batches tbody tr:hover .fee-sno{background:var(--red);}
+
+.c-batch{text-align:left!important;white-space:normal!important;min-width:210px;}
+.fee-batch{
+  display:block;font-family:var(--font-d);font-size:18px;line-height:1.1;
+  text-transform:uppercase;letter-spacing:.01em;color:var(--ink);
+}
+.fee-code{
+  display:inline-block;margin-top:6px;padding:3px 9px;border-radius:999px;
+  background:rgba(225,29,46,.08);border:1px solid rgba(225,29,46,.2);
+  font-family:var(--font-m);font-size:10px;letter-spacing:.14em;color:var(--red-hot);font-weight:600;
+}
+
+.c-fee{text-align:right!important;white-space:nowrap;width:150px;}
+.fee-money{
+  font-family:var(--font-d);font-size:25px;line-height:1;letter-spacing:.005em;
+  color:var(--ink);display:inline-flex;align-items:baseline;gap:2px;
+  font-variant-numeric:tabular-nums;
+}
+.fee-money i{font-style:normal;font-size:16px;color:var(--red);}
+/* empty cell: a dash on the same baseline as the prices beside it,
+   so the column still reads as a straight line down the page */
+.fee-na{
+  font-family:var(--font-d);font-size:25px;line-height:1;
+  color:var(--gry);opacity:.35;
+}
+
+.c-rem{
   text-align:left!important;white-space:normal!important;
-  font-size:12.5px;color:var(--gry)!important;max-width:260px;line-height:1.55;
+  font-size:13px;color:var(--gry-lt)!important;max-width:280px;line-height:1.6;
 }
-.fee-na{color:var(--gry);opacity:.5;}
 
 /* ---- notes ---- */
 .fee-gst{
@@ -856,12 +908,40 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 /* fee tables become stacked cards on small screens */
 @media(max-width:640px){
   .fee-table,.fee-table--batches{min-width:0;}
-  /* the batch table stacks: each row becomes a labelled card */
-  .fee-table--batches th[scope="row"]{min-width:0;font-size:14px;color:var(--ink);letter-spacing:0;text-transform:none;font-family:var(--font-d);}
-  .fee-table--batches th[scope="row"]::before{content:none;}
-  .fee-sno{display:none!important;}
-  .fee-amt{font-size:17px;}
-  .fee-rem{max-width:none;text-align:right!important;}
+
+  /* the batch table stacks: each row becomes its own card */
+  .fee-table--batches tbody tr{
+    display:block;padding:0;margin-bottom:12px;border-radius:14px;
+    background:var(--glass-2);border:1px solid var(--glass-brd);overflow:hidden;
+  }
+  .fee-table--batches tbody tr:nth-child(even) > *,
+  .fee-table--batches tbody tr:hover > *{background:transparent;}
+  .fee-table--batches tbody tr > *{
+    border-top:none;padding:9px 16px;border-radius:0!important;
+  }
+  .fee-table--batches tbody tr > *:first-child{display:none;}   /* row number */
+
+  .c-batch{
+    display:block!important;width:auto;min-width:0;
+    padding-top:15px!important;padding-bottom:11px!important;
+    border-bottom:1px solid var(--glass-brd)!important;
+  }
+  .c-batch::before{content:none!important;}
+  .fee-batch{font-size:17px;}
+
+  .c-fee{
+    display:flex!important;justify-content:space-between;align-items:center;
+    width:auto;text-align:right!important;
+  }
+  .fee-money{font-size:21px;}
+  .c-rem{
+    display:block!important;max-width:none;text-align:left!important;
+    padding-bottom:15px!important;font-size:12.5px;
+  }
+  .c-rem::before{
+    display:block;margin-bottom:4px;
+  }
+  .c-rem:empty{display:none!important;}
   .fee-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
   .fee-table tr{display:block;padding:12px 0;border-bottom:1px solid var(--glass-brd);}
   .fee-table tbody tr:last-child{border-bottom:none;}

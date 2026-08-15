@@ -249,29 +249,35 @@ if (!reduced && typeof Lenis !== 'undefined') {
   if (feeBox && C.fees && C.fees.batches) {
     const f = C.fees;
     const durs = f.durations || [{ key: 'y1', label: 'Fee' }];
-    const cell = v => (v ? esc(v) : '<span class="fee-na">—</span>');
+
+    const money = v => v
+      ? `<span class="fee-money"><i>₹</i>${esc(v.replace(/^₹/, ""))}</span>`
+      : '<span class="fee-na" aria-label="not applicable">&ndash;</span>';
 
     const table = key => `
       <div class="fee-scroll">
         <table class="fee-table fee-table--batches">
           <thead>
             <tr>
-              <th scope="col">S. No.</th>
-              <th scope="col">Batch</th>
-              <th scope="col">Online</th>
-              <th scope="col">Offline<small>excludes schooling &amp; hostel</small></th>
-              <th scope="col">Remark</th>
+              <th scope="col" class="c-sno">#</th>
+              <th scope="col" class="c-batch">Batch</th>
+              <th scope="col" class="c-fee">Online</th>
+              <th scope="col" class="c-fee">Offline<small>excludes schooling &amp; hostel</small></th>
+              <th scope="col" class="c-rem">Remark</th>
             </tr>
           </thead>
           <tbody>
             ${f.batches.map((b, i) => `
               <tr>
-                <td class="fee-sno" data-l="S. No.">${i + 1}</td>
-                <th scope="row" data-l="Batch">${esc(b.batch)}</th>
-                <td class="fee-amt" data-l="Online">${cell(b.online && b.online[key])}</td>
-                <td class="fee-amt" data-l="Offline">${cell(b.offline && b.offline[key])}</td>
-                <td class="fee-rem" data-l="Remark">${b.remark ? esc(b.remark) : '<span class="fee-na">—</span>'}</td>
-              </tr>`).join('')}
+                <td class="c-sno" data-l="#"><span class="fee-sno">${i + 1}</span></td>
+                <th scope="row" class="c-batch" data-l="Batch">
+                  <span class="fee-batch">${esc(b.batch)}</span>
+                  ${b.code ? `<span class="fee-code">${esc(b.code)}</span>` : ""}
+                </th>
+                <td class="c-fee" data-l="Online">${money(b.online && b.online[key])}</td>
+                <td class="c-fee" data-l="Offline">${money(b.offline && b.offline[key])}</td>
+                <td class="c-rem" data-l="Remark">${b.remark ? esc(b.remark) : ""}</td>
+              </tr>`).join("")}
           </tbody>
         </table>
       </div>`;
