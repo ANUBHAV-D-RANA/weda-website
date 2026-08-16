@@ -33,7 +33,6 @@ if (!reduced && typeof Lenis !== 'undefined') {
           <span class="pframe__cap"><b>//</b> ${esc(c.label)}</span>
         </div>
         <div>
-          <span class="course-row__no">${String(i + 1).padStart(2, '0')} — Category</span>
           <h2>${esc(c.title)}</h2>
           ${(c.programs || []).length ? `<div class="course-row__progs">${c.programs.map(p => `<span>${esc(p)}</span>`).join('<i>|</i>')}</div>` : ''}
           <p>${esc(c.desc)}</p>
