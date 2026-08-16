@@ -1290,7 +1290,10 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 /* ============================================================
    BLOG INDEX — post cards (blog.html)
    ============================================================ */
-.pcard{padding:clamp(24px,2.8vw,38px);}
+/* .pcard is an <a>, which defaults to display:inline — that broke the
+   card into disconnected fragments (the border only wrapped the tag
+   pill, the heading spilled out past it). Block-level fixes it. */
+.pcard{display:block;padding:clamp(24px,2.8vw,38px);}
 .pcard__tag{
   display:inline-block;font-family:var(--font-m);font-size:11px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:14px;
