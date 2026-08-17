@@ -369,15 +369,6 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 .feat__item b{display:block;font-family:var(--font-d);font-size:17px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px;color:var(--ink);}
 .feat__item p{font-size:13.5px;color:var(--gry);line-height:1.6;}
 
-/* photo-pending placeholder frame — swap for a real <img> once the client supplies one */
-.pframe--ph{
-  height:100%;display:grid;place-items:center;
-  background:repeating-linear-gradient(135deg,rgba(12,12,14,.05) 0 12px,rgba(12,12,14,.02) 12px 24px);
-  border-style:dashed;
-}
-.pframe__ph{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:20px;}
-.pframe__ph-ic{font-size:34px;opacity:.5;filter:grayscale(1);}
-.pframe__ph b{font-family:var(--font-m);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gry);font-weight:500;}
 
 /* review teaser */
 .review-hero{display:grid;grid-template-columns:auto 1fr;gap:clamp(26px,3.5vw,56px);align-items:center;padding:clamp(28px,3.4vw,52px);}
