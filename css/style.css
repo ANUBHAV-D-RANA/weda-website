@@ -348,25 +348,8 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 .hero__cue i{width:1px;height:46px;background:linear-gradient(var(--red),transparent);display:block;animation:cue 1.7s var(--ease) infinite;}
 @keyframes cue{0%{transform:scaleY(.2);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}56%{transform-origin:bottom}100%{transform:scaleY(.2);transform-origin:bottom}}
 
-/* dossier cards */
-.dossier{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,22px);}
-.dcard{padding:clamp(26px,2.6vw,40px);min-height:300px;display:flex;flex-direction:column;}
-.dcard__no{font-family:var(--font-m);font-size:11px;color:var(--red);letter-spacing:.16em;}
-.dcard__ic{margin:26px 0 14px;}
-.ico{
-  width:48px;height:48px;border-radius:13px;display:grid;place-items:center;
-  background:rgba(225,29,46,.08);border:1px solid rgba(225,29,46,.3);
-}
-.ico svg{width:24px;height:24px;stroke:var(--red);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block;}
-.feat__item .ic svg,.mode-cell .ic svg{width:24px;height:24px;stroke:var(--red);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block;}
+.mode-cell .ic svg,.feat__item .ic svg{width:24px;height:24px;stroke:var(--red);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block;}
 .mode-cell .ic{width:52px;height:52px;border-radius:14px;background:rgba(225,29,46,.08);border:1px solid rgba(225,29,46,.3);display:grid;place-items:center;margin:0 auto 16px;}
-.dcard h3{font-size:clamp(21px,1.9vw,28px);line-height:1;margin-bottom:12px;color:var(--ink);}
-.dcard p{font-size:13.5px;line-height:1.65;color:var(--gry);flex:1;}
-.dcard__go{display:flex;align-items:center;gap:10px;margin-top:22px;font-family:var(--font-d);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);}
-.dcard__go .arr{color:var(--red);transition:transform .3s var(--ease-o);}
-.dcard:hover .dcard__go .arr{transform:translateX(7px);}
-@media(max-width:1000px){.dossier{grid-template-columns:1fr 1fr;}}
-@media(max-width:560px){.dossier{grid-template-columns:1fr;}}
 
 /* home feature split */
 .feat{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,4vw,64px);align-items:center;}
@@ -379,11 +362,22 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 }
 .feat__badge b{color:var(--red);}
 @media(max-width:940px){.feat{grid-template-columns:1fr;}.feat__stack{right:6px;bottom:-26px;}}
+.feat__sub{font-size:14.5px;line-height:1.75;color:var(--gry);margin-top:14px;max-width:52ch;}
 .feat__list{display:flex;flex-direction:column;gap:14px;margin-top:34px;}
 .feat__item{display:flex;gap:18px;align-items:flex-start;padding:18px 22px;border-radius:16px;}
 .feat__item .ic{width:44px;height:44px;border-radius:12px;background:rgba(225,29,46,.09);border:1px solid rgba(225,29,46,.3);display:grid;place-items:center;font-size:18px;flex-shrink:0;}
 .feat__item b{display:block;font-family:var(--font-d);font-size:17px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px;color:var(--ink);}
 .feat__item p{font-size:13.5px;color:var(--gry);line-height:1.6;}
+
+/* photo-pending placeholder frame — swap for a real <img> once the client supplies one */
+.pframe--ph{
+  height:100%;display:grid;place-items:center;
+  background:repeating-linear-gradient(135deg,rgba(12,12,14,.05) 0 12px,rgba(12,12,14,.02) 12px 24px);
+  border-style:dashed;
+}
+.pframe__ph{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:20px;}
+.pframe__ph-ic{font-size:34px;opacity:.5;filter:grayscale(1);}
+.pframe__ph b{font-family:var(--font-m);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gry);font-weight:500;}
 
 /* review teaser */
 .review-hero{display:grid;grid-template-columns:auto 1fr;gap:clamp(26px,3.5vw,56px);align-items:center;padding:clamp(28px,3.4vw,52px);}
@@ -443,13 +437,6 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 /* ============================================================
    ABOUT PAGE
    ============================================================ */
-/* homepage — "what is WEDA" intro paragraph, above the dossier */
-.mani-lead{
-  max-width:900px;margin:0 auto;text-align:center;
-  font-size:clamp(16px,1.6vw,19px);line-height:1.8;color:var(--gry-lt);
-}
-.mani-lead b{color:var(--ink);font-weight:700;}
-@media(max-width:640px){.mani-lead{text-align:left;}}
 
 .dir-feature{display:grid;grid-template-columns:1fr .85fr;gap:clamp(30px,4vw,70px);align-items:center;}
 .dir-feature__portrait{position:relative;}
