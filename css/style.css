@@ -443,11 +443,14 @@ body.cur-hover .cur-ring{width:68px;height:68px;opacity:.5;}
 /* ============================================================
    ABOUT PAGE
    ============================================================ */
-.mani-text{
-  font-weight:800;text-transform:uppercase;font-size:clamp(26px,3.8vw,54px);line-height:1.1;letter-spacing:-.01em;max-width:1150px;color:var(--ink);
+/* homepage — "what is WEDA" intro paragraph, above the dossier */
+.mani-lead{
+  max-width:900px;margin:0 auto;text-align:center;
+  font-size:clamp(16px,1.6vw,19px);line-height:1.8;color:var(--gry-lt);
 }
-.mani-text .wd{opacity:.14;display:inline-block;}
-.mani-text .rd{color:var(--red);}
+.mani-lead b{color:var(--ink);font-weight:700;}
+@media(max-width:640px){.mani-lead{text-align:left;}}
+
 .dir-feature{display:grid;grid-template-columns:1fr .85fr;gap:clamp(30px,4vw,70px);align-items:center;}
 .dir-feature__portrait{position:relative;}
 .dir-feature__portrait .pframe{aspect-ratio:4/5;background:radial-gradient(85% 70% at 50% 30%,rgba(225,29,46,.18),#ffffff);}
