@@ -198,6 +198,14 @@ window.WEDA_CONTENT = {
      ============================================================ */
   posts: [
     {
+      title: "Before You Fill Any Sainik School Application Form, Read This First",
+      link: "blog-before-you-apply-sainik-school.html",
+      category: "Admissions",
+      meta: "WEDA Parent Knowledge Series · Issue 01 · 9 min read",
+      author: "Col Amardeep Singh, SM (Retd.)",
+      excerpt: "Four institutions, four different doors — Sainik School, New Sainik School, RMS and RIMC are not the same system. A six-question readiness check every family should run before touching an application form.",
+    },
+    {
       title: "Fifteen Things Parents Believe About Sainik School Admissions That Simply Are Not True",
       link: "blog-sainik-school-myths.html",
       category: "Sainik School",
