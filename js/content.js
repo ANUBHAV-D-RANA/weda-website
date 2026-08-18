@@ -202,7 +202,7 @@ window.WEDA_CONTENT = {
       link: "blog-before-you-apply-sainik-school.html",
       category: "Admissions",
       meta: "WEDA Parent Knowledge Series · Issue 01 · 9 min read",
-      author: "Col Amardeep Singh, SM (Retd.)",
+      author: "Col Amardeep Sir, SM (Retd.)",
       excerpt: "Four institutions, four different doors — Sainik School, New Sainik School, RMS and RIMC are not the same system. A six-question readiness check every family should run before touching an application form.",
     },
     {
